@@ -7,13 +7,11 @@ import { nav_replace } from '../../js/unique/appLayout/redirectFile';
 export default function HomePage(props) {
 	const hist = useHistory();
 	
-	const [formdata, set_formdata] = useState({code:"test", pwd:"111111"});
-	const setFormdata = type => e => set_formdata(pre => ({...pre, [type]: e.target.value}));
+	const [formdata, setFormdata] = useState({code:"test", pwd:"111111"});
+	const chgFormdata = type => e => setFormdata(pre => ({...pre, [type]: e.target.value}));
 
 	const nav_replaceCall = useCallback(
-		({role_path}) => {
-			hist.replace(role_path)
-		},
+		({role_path}) => { hist.replace(role_path) },
 		[hist],
 	)
 	useEffect(() => {
@@ -43,18 +41,18 @@ export default function HomePage(props) {
 			<div className="my-3 row">
 				<label htmlFor="code-ipt" className="col-sm-2 col-form-label">code</label>
 				<div className="col-sm-10">
-					<input type="text"  className="form-control" id="code-ipt" onChange={setFormdata('code')} value={formdata.code} />
+					<input type="text"  className="form-control" id="code-ipt" onChange={chgFormdata('code')} value={formdata.code} />
 				</div>
 			</div>
 			<div className="mb-3 row">
 				<label htmlFor="pwd-ipt" className="col-sm-2 col-form-label">Password</label>
 				<div className="col-sm-10">
-					<input type="password" className="form-control" id="pwd-ipt" onChange={setFormdata('pwd')} value={formdata.pwd} />
+					<input type="password" className="form-control" id="pwd-ipt" onChange={chgFormdata('pwd')} value={formdata.pwd} />
 				</div>
 			</div>
 			<div className="mb-3 row">
 			<div className="col-sm-2"></div>
-				<div className="col-sm-10">
+				<div className="col-sm-10 text-right">
 					<button className="btn btn-primary btn-block" onClick={login}> Login </button>
 				</div>
 			</div>

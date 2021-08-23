@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function BserLayout() {
+export default function WkerRouter() {
         return (
                 <div>
-                        BserLayout...
+                        WkerRouter...
                 </div>
         )
 }

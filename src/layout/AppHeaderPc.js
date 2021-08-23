@@ -1,9 +1,11 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import confUser from '../js/conf/confUser';
+import './AppHeaderPc.css'
 
 export default function AppHeader(props) {
 	const [spreadbar, setSpreadbar] = useState('');
+	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 	const role = localStorage.getItem("role");
 	const logout = () => {
 		localStorage.removeItem("accessToken");
@@ -19,8 +21,12 @@ export default function AppHeader(props) {
 	const hideSidebar = () => {
 		setSpreadbar('')
 	}
-
 	const {links, name} = props;
+	useEffect(() => {
+		window.addEventListener("resize", () => setInnerWidth(window.innerWidth)); 
+		// unmount this component
+		return () => setSpreadbar("");
+	}, [])
 	return (
 		<div className={`sidebar ${spreadbar}`}>
 			<div className="logo_content">
@@ -44,7 +50,10 @@ export default function AppHeader(props) {
 									<i className={link.icon}></i>
 									<span className="links_name">{link.labal}</span>
 								</NavLink>
-								<span className="tooltip">{link.labal}</span>
+								{
+									innerWidth > 1630 && <span className="tooltip">{link.labal}</span>
+								}
+								
 							</li>
 						)
 					})
@@ -55,13 +64,13 @@ export default function AppHeader(props) {
 				<div className="profile_content">
 					<div className="profile">
 						<div className="profile_details">
-							<img src="https://lh3.googleusercontent.com/proxy/vAyDH3aJSDVI8w5N3n_LCjK-oM17mHS1858D8XETcPee0NllV-cwSyz-CRak2TUGV0rq70GOpMxHRULoKzfVmblyG2wK92h6_pQ" alt="" />
+							<img src={`${process.env.PUBLIC_URL}/dabai.jpeg`} alt="avatar" />
 							<div className="name_job">
 								<div className="name">{name}</div>
-								<div className="job">{confUser.role[role]}</div>
+								<div className="job">{confUser.role[role].cn}</div>
 							</div>
 						</div>
-						<i className='bx bx-log-out' style={{color: "red"}} id="log_out" onClick={logout}></i>
+						<i className='bx bx-log-out'  id="log_out" onClick={logout}></i>
 					</div>
 				</div>
 			}

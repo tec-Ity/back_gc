@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function SferLayout() {
+export default function SferRouter() {
         return (
                 <div>
-                        SferLayout...
+                        SferRouter...
                 </div>
         )
 }

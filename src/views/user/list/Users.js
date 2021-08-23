@@ -1,55 +1,52 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {Link} from 'react-router-dom';
-import confUser from '../../../js/conf/confUser';
-import { getObjs_Prom} from '../../../js/api';
+import React, { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
+
+import { getRole } from "../../../js/conf/confUser";
+import { getObjs_Prom } from "../../../js/api";
+
+import UserAddModal from "../add/UserAddModal";
+import NavBread from "../../../components/NavBread";
 
 export default function Users(props) {
-	const [Users, setUsers] = useState([]);
-	const apiUsers = '/Users';
+  const role = getRole();
+  const [Users, setUsers] = useState([]);
+  const [modalShow, setModalShow] = React.useState(false);
+  const apiUsers = "/Users";
 
-	const shopsCall = useCallback(
-		() => {
-			getObjs_Prom(apiUsers, Users, setUsers, true);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, [],
-	)
-	useEffect(() => {
-		shopsCall();
-		return () =>{
-			setUsers([])
-		}
-	}, [shopsCall])
-	const {role} = props;
-	return (
-		<>
-			<div className="row">
-				<div className="col-md-11">
-					<ol className="breadcrumb">
-						<li className="breadcrumb-item"><Link to="/home">Home</Link></li>
-						<li className="breadcrumb-item active" aria-current="page">Users</li>
-					</ol>
-				</div>
-				<div className="col-md-1">
-					<Link className="btn btn-info" to={`/${role}/userAdd`}>+</Link>
-				</div>
-			</div>
-			<div className="list mt-3">
-				{
-					Users.map(User => {
-						return (
-							<div className="row" key={User._id}>
-								<div className="col-3">
-									<Link  to={`/${role}/user/${User._id}`}>
-										{User.code}
-									</Link>
-								</div>
-								<div className="col-3">{User.nome}</div>
-								<div className="col-3">{confUser.role[User.role]}</div>
-							</div>
-						)
-					})
-				}
-			</div>
-		</>
-	)
+  const usersCall = useCallback(() => {
+    getObjs_Prom(apiUsers, Users, setUsers, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    usersCall();
+    return () => setUsers([]);
+  }, [usersCall]);
+
+  return (
+    <>
+      <NavBread  activePage="Users"></NavBread>
+
+      <div className="text-right">
+	<button className="btn btn-info" onClick={() => setModalShow(true)}> + </button>
+	<UserAddModal
+		show={modalShow}
+		onHide={() => setModalShow(false)}
+	/>
+      </div>
+
+      <div className="list mt-3">
+        {Users.map((User) => {
+          return (
+            <div className="row" key={User._id}>
+              <div className="col-3">
+                <Link to={`/${role.val}/user/${User._id}`}>{User.code}</Link>
+              </div>
+              <div className="col-3">{User.nome}</div>
+              <div className="col-3">{role.cn}</div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
 }

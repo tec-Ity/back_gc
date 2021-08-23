@@ -2,23 +2,23 @@ import React, {useState} from 'react'
 import styleUi from '../js/conf/styleUi';
 
 export default function UiVariety(props) {
-        const [keyUI, set_keyUI] = useState(styleUi.init);
-        const [activeBtns, set_activeBtns] = useState(['btn-success', 'btn-outline-success']);
-        const {UiRow, UiCard, Objects, role} = props;
+        const [keyUi, setKeyUi] = useState(styleUi.init);
+        const [activeBtns, setActiveBtns] = useState(['btn-success', 'btn-outline-success']);
+        const {UiRow, UiCard, Objects} = props;
         const changeUi = ( iBtn) => {
                 // 变化样式组件
-                set_keyUI(styleUi.arr[iBtn]);
+                setKeyUi(styleUi.arr[iBtn]);
                 // 改变按钮样式
                 const btns = [];
                 activeBtns.forEach((item, i) => btns.push((i === iBtn) ? "btn-success": "btn-outline-success") )
-                set_activeBtns(btns)
+                setActiveBtns(btns)
         }
         const componentUI = () => {
-                switch (keyUI) {
+                switch (keyUi) {
                         case styleUi.arr[0]:
-                                return <UiRow   Objects={Objects} role={role}/>                
+                                return <UiRow   Objects={Objects} />                
                         case styleUi.arr[1]:
-                                return <UiCard   Objects={Objects} role={role}/>
+                                return <UiCard   Objects={Objects} />
                         default:
                                 return <div> Not exist this UI </div>
                 }

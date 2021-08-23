@@ -26,21 +26,20 @@ export default function Pd(props) {
                 switch (Key) {
                         case 1:
                                 return <PdBasic Pd={Pd}/>
-
                         default:
                                 return <PdProds/>
                 }
         }
 
-        const set_Key = (value) => {
+        const setComponentKey = (value) => {
                 setKey(value);
         } 
 
         return (
                 <div>
                         <div className="form-inline my-3">
-                                <button className="btn btn-outline-success mx-3" onClick={() =>set_Key(1)}>Basic</button>
-                                <button className="btn btn-outline-success mx-3" onClick={() =>set_Key(2)}>Products</button>
+                                <button className="btn btn-outline-success mx-3" onClick={() =>setComponentKey(1)}>Basic</button>
+                                <button className="btn btn-outline-success mx-3" onClick={() =>setComponentKey(2)}>Products</button>
                         </div>
                         {routeFunc()}
                 </div>

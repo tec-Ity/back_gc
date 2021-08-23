@@ -1,15 +1,17 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {get_DNS} from '../../../js/api'
+import  {getRole} from '../../../js/conf/confUser';
 
 export default function ShopUiRow(props) {
+        const role = getRole();
         return (<>
                 {
                         props.Objects.map(Shop => {
                                 return (
                                         <div className="row" key={Shop._id}>
                                                 <div className="col-3">
-                                                        <Link  to={`/${props.role}/shop/${Shop._id}`}>
+                                                        <Link  to={`/${role.val}/shop/${Shop._id}`}>
                                                                 <img alt={Shop.code} src={`${get_DNS()}${Shop.img_url}`} style={{width: "100px"}} />
                                                         </Link>
                                                 </div>

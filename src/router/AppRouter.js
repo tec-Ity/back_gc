@@ -3,11 +3,11 @@ import { Switch, Route, Redirect} from 'react-router-dom';
 import HomePage from '../views/_home/HomePage';
 import Errpage from '../views/_home/Errpage';
 
-import OwerLayout from './OwerLayout';
-import MgerLayout from './MgerLayout';
-import SferLayout from './SferLayout';
-import BserLayout from './BserLayout';
-import WkerLayout from './WkerLayout';
+import OwerRouter from './OwerRouter';
+import MgerRouter from './MgerRouter';
+import SferRouter from './SferRouter';
+import BserRouter from './BserRouter';
+import WkerRouter from './WkerRouter';
 
 export default function AppRouter(props) {
 	return (
@@ -16,11 +16,12 @@ export default function AppRouter(props) {
 			
 			<Route path="/errpage" component={Errpage} />
 			
-			<Route path="/ower" component={OwerLayout} />
-			<Route path="/mger" component={MgerLayout} />
-			<Route path="/sfer" component={SferLayout} />
-			<Route path="/bser" component={BserLayout} />
-			<Route path="/wker" component={WkerLayout} />
+			<Route path="/ower" component={OwerRouter} />
+			<Route path="/mger" component={MgerRouter} />
+			<Route path="/sfer" component={SferRouter} />
+			<Route path="/bser" component={BserRouter} />
+			<Route path="/wker" component={WkerRouter} />
+
 			<Redirect to="/home" />
 		</Switch>
 	)

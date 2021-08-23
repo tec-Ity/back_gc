@@ -1,8 +1,10 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {get_DNS} from '../../../js/api'
+import  {getRole} from '../../../js/conf/confUser';
 
 export default function ShopUiCard(props) {
+        const role = getRole();
         return (<>
                 <div className="row">
                         {
@@ -10,7 +12,7 @@ export default function ShopUiCard(props) {
                                         return (
                                                 <div className="col-sm-6 col-md-4 col-lg-3" key={Shop._id}>
                                                         <div className="card" >
-                                                                <Link  to={`/${props.role}/shop/${Shop._id}`}>
+                                                                <Link  to={`/${role.val}/shop/${Shop._id}`}>
                                                                         <img alt={Shop.code} src={`${get_DNS()}${Shop.img_url}`} style={{width: "100px"}} />
                                                                 </Link>
                                                                 <div className="card-body">

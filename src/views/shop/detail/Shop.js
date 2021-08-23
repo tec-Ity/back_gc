@@ -1,11 +1,17 @@
 import React, {useState, useEffect, useCallback} from 'react'
+import { Link } from 'react-router-dom'
 import { useParams } from 'react-router'
 import { getObj_Prom} from '../../../js/api'
+
+import  {getRole} from '../../../js/conf/confUser';
+import NavBread from '../../../components/NavBread'
 
 import ShopBasic from './ShopBasic'
 import ShopAreas from './ShopAreas'
 import ShopProds from './ShopProds'
-export default function Shop(props) {
+export default function Shop() {
+        const role = getRole();
+
         const {id} = useParams();
         const apiShop = `/Shop/${id}`;
         const [Shop, setShop] = useState({});
@@ -26,7 +32,10 @@ export default function Shop(props) {
         const setKeyComp = (key) => {
                 setComp(Number(key));
         }
-        return (
+        return (<>
+                <NavBread activePage="ShopDetail">
+                        <Link to={`/${role.val}/shops`}>Shops</Link>
+                </NavBread>
                 <div>
                         <div className="form-inline my-3">
                                 <button className="btn btn-outline-success mx-3" type="button" onClick={() => setKeyComp(1)}>Basic</button>
@@ -41,5 +50,5 @@ export default function Shop(props) {
                                 :<ShopProds/>
                         }
                 </div>
-        )
+        </>)
 }
