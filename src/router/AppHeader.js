@@ -1,6 +1,10 @@
-import { NavLink, Link } from "react-router-dom";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import confUser from '../js/conf/confUser';
 
 export default function AppHeader(props) {
+	const [spreadbar, setSpreadbar] = useState('');
+	const role = localStorage.getItem("role");
 	const logout = () => {
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("refreshToken");
@@ -9,49 +13,58 @@ export default function AppHeader(props) {
 		localStorage.removeItem("curShop");
 		props.logout();
 	}
-	return (<>
-		{/* <div style={{height: "61px", backgroundColor: "#000000"}}></div> */}
-		<div style={{height: "61px"}}></div>
-		<nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-			<div className="container-fluid">
-				<Link className="navbar-brand" to="/">
-					<img alt="" src={`${process.env.PUBLIC_URL}/favicon.ico`} style={{height: "35px"}} />
-				</Link>
-				<button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-					<span className="navbar-toggler-icon"></span>
-				</button>
-				<div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-					<div className="offcanvas-header">
-						<h5 className="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-						<button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-					</div>
-					<div className="offcanvas-body">
-						
-						<ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-							{
-								props.name !== null&&
-								 <>
-									{
-										props.links?.map(item => {
-											return (
-												<li  key={item.labal} className="nav-item">
-													<NavLink className="nav-link" to={item.to}>{item.labal}</NavLink>
-												</li>
-											)
-										})
-									}
-									<li  className="nav-item">
-										<NavLink className="text-dark nav-link"  to='/center'>center:{props.name}</NavLink>
-									</li>
-									<li  className="nav-item">
-										<div className="text-danger  nav-link" onClick={logout}>logout</div>
-									</li>
-								</>
-							}
-						</ul>
+	const togSidebar = () => {
+		setSpreadbar(spreadbar===''?'spreadbar':'');
+	}
+	const hideSidebar = () => {
+		setSpreadbar('')
+	}
+
+	const {links, name} = props;
+	return (
+		<div className={`sidebar ${spreadbar}`}>
+			<div className="logo_content">
+				<div className="logo">
+					<i className='bx bxl-c-plus-plus'></i>
+					<div className="logo_name">GC</div>
+				</div>
+				<i className='bx bx-menu' id="btn" onClick={togSidebar}></i>
+			</div>
+			<ul className="nav_list">
+				<li>
+					<i className='bx bx-search' onClick={togSidebar}></i>
+					<input type="text" className="links_name " placeholder="Search..." />
+					<span className="tooltip">Search</span>
+				</li>
+				{
+					links&& links.map((link, index) => {
+						return (
+							<li key={`headerNavLink${index}`} onClick={hideSidebar}>
+								<NavLink to={link.to} className="">
+									<i className={link.icon}></i>
+									<span className="links_name">{link.labal}</span>
+								</NavLink>
+								<span className="tooltip">{link.labal}</span>
+							</li>
+						)
+					})
+				}
+			</ul>
+			{
+				props.name !== null&&
+				<div className="profile_content">
+					<div className="profile">
+						<div className="profile_details">
+							<img src="https://lh3.googleusercontent.com/proxy/vAyDH3aJSDVI8w5N3n_LCjK-oM17mHS1858D8XETcPee0NllV-cwSyz-CRak2TUGV0rq70GOpMxHRULoKzfVmblyG2wK92h6_pQ" alt="" />
+							<div className="name_job">
+								<div className="name">{name}</div>
+								<div className="job">{confUser.role[role]}</div>
+							</div>
+						</div>
+						<i className='bx bx-log-out' style={{color: "red"}} id="log_out" onClick={logout}></i>
 					</div>
 				</div>
-			</div>
-		</nav>
-	</>);
+			}
+		</div>
+	);
 }

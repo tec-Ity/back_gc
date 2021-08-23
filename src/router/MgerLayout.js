@@ -1,6 +1,6 @@
 import {Link, Switch, Route} from 'react-router-dom';
 
-import Users from '../views/user/Users';
+import Users from '../views/user/list/Users';
 import Shops from '../views/shop/list/Shops';
 import Shop from '../views/shop/detail/Shop';
 

@@ -32,7 +32,7 @@ export default function HomePage(props) {
 				localStorage.setItem("role", curUser.role);
 				if(curUser.Shop) localStorage.setItem("curShop", curUser.Shop);
 			}
-                        props.login()
+            props.login()
 		} catch(error) {
 			console.log(error);
 		}

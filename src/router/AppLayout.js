@@ -6,15 +6,16 @@ import {  useHistory} from 'react-router-dom';
 import AppRouter from './AppRouter';
 import AppHeader from './AppHeader';
 import { nav_replace } from '../js/unique/appLayout/redirectFile';
+import './App.css'
 
 export default function AppLayout() {
-        const hist = useHistory();
+	const hist = useHistory();
 
-        const [refreshToken, set_refreshToken] = useState( localStorage.getItem("refreshToken") );
+	const [refreshToken, set_refreshToken] = useState( localStorage.getItem("refreshToken") );
 	const [name, set_name] = useState( localStorage.getItem("name") );
-        const [links, set_links] = useState();
+	const [links, set_links] = useState();
 
-        const AppCallback = useCallback(
+	const AppCallback = useCallback(
 		({navLinks, role_path}) => {
 			set_links(navLinks);
 			if(role_path === '/' || role_path === '/home') {	// 未登录状态
@@ -36,20 +37,21 @@ export default function AppLayout() {
 		AppCallback( {...nav_replace(localStorage.getItem("role"))} );
 	}, [AppCallback])
 
-        const login = () => {
+	const login = () => {
 		set_refreshToken( localStorage.getItem("refreshToken"));
-		set_name( localStorage.getItem("name"))
-
+		set_name(localStorage.getItem("name"))
 		AppCallback( {...nav_replace(localStorage.getItem("role"))} );
+	}
+	const logout = () => {
+		set_refreshToken( localStorage.getItem("refreshToken"));
+		set_name( localStorage.getItem("name"));
+		AppCallback( {...nav_replace(localStorage.getItem("role"))} );
+	}
 
-	}
-        const logout = () => {
-                set_refreshToken( localStorage.getItem("refreshToken"));
-                set_name( localStorage.getItem("name"));
-                AppCallback( {...nav_replace(localStorage.getItem("role"))} );
-	}
 	return ( <>
-                <AppHeader name={name} refreshToken={refreshToken} links={links} logout={logout}/>
-                <AppRouter login={login}/>
-        </> );
+		<AppHeader name={name} refreshToken={refreshToken} links={links} logout={logout}/>
+		<div className="home_content">
+			<AppRouter login={login}/>
+		</div>
+	</> );
 }

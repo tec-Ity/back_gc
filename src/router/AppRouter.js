@@ -10,18 +10,18 @@ import BserLayout from './BserLayout';
 import WkerLayout from './WkerLayout';
 
 export default function AppRouter(props) {
-        return (
-                <Switch>
-                        <Route path="/home" ><HomePage login={props.login}/></Route>
+	return (
+		<Switch>
+			<Route path="/home" ><HomePage login={props.login}/></Route>
 			
-                        <Route path="/errpage" component={Errpage} />
+			<Route path="/errpage" component={Errpage} />
 			
-                        <Route path="/ower" component={OwerLayout} />
-                        <Route path="/mger" component={MgerLayout} />
-                        <Route path="/sfer" component={SferLayout} />
-                        <Route path="/bser" component={BserLayout} />
-                        <Route path="/wker" component={WkerLayout} />
-                        <Redirect to="/home" />
-                </Switch>
-        )
+			<Route path="/ower" component={OwerLayout} />
+			<Route path="/mger" component={MgerLayout} />
+			<Route path="/sfer" component={SferLayout} />
+			<Route path="/bser" component={BserLayout} />
+			<Route path="/wker" component={WkerLayout} />
+			<Redirect to="/home" />
+		</Switch>
+	)
 }
