@@ -6,7 +6,9 @@ import {  useHistory} from 'react-router-dom';
 import AppRouter from '../router/AppRouter';
 import AppHeaderPc from './AppHeaderPc';
 import AppHeaderMb from './AppHeaderMb';
+
 import { nav_replace } from '../js/unique/appLayout/redirectFile';
+import threshold from '../js/conf/threshold';
 
 export default function AppLayout() {
 	const hist = useHistory();
@@ -51,7 +53,7 @@ export default function AppLayout() {
 
 	return ( <>
 		{
-			innerWidth >= 720
+			innerWidth >= threshold.pc_mb
 			?  (<>
 				<AppHeaderPc name={name} refreshToken={refreshToken} links={links} logout={logout}/>
 				<div className="home_content">

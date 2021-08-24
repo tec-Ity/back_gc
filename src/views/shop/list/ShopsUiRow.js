@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {get_DNS} from '../../../js/api'
 import  {getRole} from '../../../js/conf/confUser';
 
-export default function ShopUiRow(props) {
+export default function ShopsUiRow(props) {
         const role = getRole();
         return (<>
                 {

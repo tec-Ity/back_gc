@@ -4,8 +4,8 @@ import { getObjs_Prom } from "../../../js/api";
 import NavBread from "../../../components/NavBread";
 
 import UiVariety from "../../../components/UiVariety";
-import ShopUiRow from "./ShopUiRow";
-import ShopUiCard from "./ShopUiCard";
+import ShopsUiRow from "./ShopsUiRow";
+import ShopsUiCard from "./ShopsUiCard";
 export default function Shops(props) {
   const api = "/Shops";
   const [Objects, setObjects] = useState([]);
@@ -24,7 +24,7 @@ export default function Shops(props) {
     <>
       <NavBread  activePage="Shops"></NavBread>
       <div>
-        <UiVariety UiRow={ShopUiRow} UiCard={ShopUiCard} Objects={Objects} />
+        <UiVariety UiRow={ShopsUiRow} UiCard={ShopsUiCard} Objects={Objects} />
       </div>
     </>
   );

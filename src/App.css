@@ -16,3 +16,6 @@ body{
 .text-right{
 	text-align: right;
 }
+.img-neat {
+	object-fit: scale-down;
+}

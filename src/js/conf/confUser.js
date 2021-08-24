@@ -7,13 +7,13 @@ const  confUser  = {
         "101": {val: 'bser', en: 'boss', cn: "店铺老板"},
         "105": {val: 'wker', en: 'worker', cn: "店铺员工"},
     },
-    "role_obj": {
-        "owner": { "num": 1, "val": "拥有者" },
-        "manager": { "num": 3, "val": "管理者" },
-        "staff": { "num": 5, "val": "超级员工" },
-        "boss": { "num": 101, "val": "店铺老板" },
-        "worker": { "num": 105, "val": "店铺员工" }
-    },
+	"role_obj": {
+		owner:		    {num: 1, 	val: "owner",   	en: 'owner',		cn: '拥有者', 	},
+		manager:	{num: 3, 	val: "manager", en: 'manager',		cn: '管理者', 	},
+		staff:		        {num: 5, 	val: "staff",   	    en: 'staff',		cn: '超级员工',	},
+		boss:		      {num: 101, 	val: "boss", 	    en: 'boss',			cn: '店铺老板'	},
+		worker:		    {num: 105, 	val: "worker", 	en: 'worker',		cn: '店铺员工'	},
+	},
 
     "Lang": {
         "cn": { "num": 1, "val": "中文" },

@@ -1,6 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
 
-export default function AppHeader(props) {
+export default function AppHeaderMb(props) {
 	const logout = () => {
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("refreshToken");

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import confUser from '../js/conf/confUser';
+import {getRole} from '../js/conf/confUser';
+import threshold from "../js/conf/threshold";
 import './AppHeaderPc.css'
 
-export default function AppHeader(props) {
+export default function AppHeaderPc(props) {
 	const [spreadbar, setSpreadbar] = useState('');
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-	const role = localStorage.getItem("role");
+	const role = getRole();
+
 	const logout = () => {
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("refreshToken");
@@ -15,18 +17,16 @@ export default function AppHeader(props) {
 		localStorage.removeItem("curShop");
 		props.logout();
 	}
-	const togSidebar = () => {
-		setSpreadbar(spreadbar===''?'spreadbar':'');
-	}
-	const hideSidebar = () => {
-		setSpreadbar('')
-	}
-	const {links, name} = props;
+	const togSidebar = () => setSpreadbar((spreadbar==='') ? 'spreadbar' : '' );
+	const hideSidebar = () => { /* setSpreadbar('') */  }
+
+	const {links, name} = props; // 导航栏 icon lable 及 tooltip
+
 	useEffect(() => {
 		window.addEventListener("resize", () => setInnerWidth(window.innerWidth)); 
-		// unmount this component
-		return () => setSpreadbar("");
+		return () => { setSpreadbar(""); setInnerWidth(""); }
 	}, [])
+
 	return (
 		<div className={`sidebar ${spreadbar}`}>
 			<div className="logo_content">
@@ -40,7 +40,9 @@ export default function AppHeader(props) {
 				<li>
 					<i className='bx bx-search' onClick={togSidebar}></i>
 					<input type="text" className="links_name " placeholder="Search..." />
-					<span className="tooltip">Search</span>
+					{
+						innerWidth >= threshold.tooltip && <span className="tooltip">Search</span>
+					}
 				</li>
 				{
 					links&& links.map((link, index) => {
@@ -51,7 +53,7 @@ export default function AppHeader(props) {
 									<span className="links_name">{link.labal}</span>
 								</NavLink>
 								{
-									innerWidth > 1630 && <span className="tooltip">{link.labal}</span>
+									innerWidth >= threshold.tooltip && <span className="tooltip">{link.labal}</span>
 								}
 								
 							</li>
@@ -67,7 +69,7 @@ export default function AppHeader(props) {
 							<img src={`${process.env.PUBLIC_URL}/dabai.jpeg`} alt="avatar" />
 							<div className="name_job">
 								<div className="name">{name}</div>
-								<div className="job">{confUser.role[role].cn}</div>
+								<div className="job">{role.cn}</div>
 							</div>
 						</div>
 						<i className='bx bx-log-out'  id="log_out" onClick={logout}></i>

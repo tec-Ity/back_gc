@@ -25,8 +25,12 @@ const fetchProm = (api, method, bodyObj) => {
         resolve({ status: 400, message: `[front] method Error` });
       }
       /* if can't path pleace check https , 也有可能前端程序 的服务器 设置的是localhost*/
+      // console.log(api_server)
+//       console.log(fetchObj)
       const resPromise = await fetch(api_server, fetchObj);
+      // console.log("resPromise", resPromise)
       const result = await resPromise.json();
+      // console.log("result", result)
       resolve(result);
     } catch (error) {
       resolve({ status: 500, message: `[front] fetchProm Error: ${error}` });
@@ -62,12 +66,7 @@ export const fetch_Prom = (api, method = "GET", bodyObj) => {
   });
 };
 
-export const getObjs_Prom = async (
-  api,
-  Objs = [],
-  setObjs,
-  isReload = false
-) => {
+export const getObjs_Prom = async ( api, Objs = [], setObjs, isReload = false ) => {
   try {
     const obj_res = await fetch_Prom(api);
     if (obj_res.status === 200) {

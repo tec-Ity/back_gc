@@ -13,6 +13,10 @@ export default function Users(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const apiUsers = "/Users";
 
+  const saveSuccess = (object) => {
+    const nxtUser = [object, ...Users]
+    setUsers(nxtUser);
+  }
   const usersCall = useCallback(() => {
     getObjs_Prom(apiUsers, Users, setUsers, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,11 +31,8 @@ export default function Users(props) {
       <NavBread  activePage="Users"></NavBread>
 
       <div className="text-right">
-	<button className="btn btn-info" onClick={() => setModalShow(true)}> + </button>
-	<UserAddModal
-		show={modalShow}
-		onHide={() => setModalShow(false)}
-	/>
+        <button className="btn btn-info" onClick={() => setModalShow(true)}> + </button>
+        <UserAddModal show={modalShow} onHide={() => setModalShow(false)} saveSuccess={saveSuccess}/>
       </div>
 
       <div className="list mt-3">
