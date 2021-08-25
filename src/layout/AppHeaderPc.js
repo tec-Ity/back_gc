@@ -69,7 +69,7 @@ export default function AppHeaderPc(props) {
 							<img src={`${process.env.PUBLIC_URL}/dabai.jpeg`} alt="avatar" />
 							<div className="name_job">
 								<div className="name">{name}</div>
-								<div className="job">{role.cn}</div>
+								<div className="job">{role?.cn}</div>
 							</div>
 						</div>
 						<i className='bx bx-log-out'  id="log_out" onClick={logout}></i>

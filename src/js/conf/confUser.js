@@ -22,7 +22,7 @@ const  confUser  = {
     }
 }
 
-export const getRole = () => {
-    return  confUser.role[parseInt(localStorage.getItem('role'))];
+export const getRole = (role = parseInt(localStorage.getItem('role'))) => {
+    return  confUser.role[role];
 }
 export default confUser

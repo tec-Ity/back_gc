@@ -7,7 +7,7 @@ import { nav_replace } from '../../js/unique/appLayout/redirectFile';
 export default function HomePage(props) {
 	const hist = useHistory();
 	
-	const [formdata, setFormdata] = useState({code:"test", pwd:"111111"});
+	const [formdata, setFormdata] = useState({code:"", pwd:""});
 	const chgFormdata = type => e => setFormdata(pre => ({...pre, [type]: e.target.value}));
 
 	const nav_replaceCall = useCallback(

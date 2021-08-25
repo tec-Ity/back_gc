@@ -17,9 +17,7 @@ export default function Pd(props) {
         )
         useEffect(() => {                
                 pdCallback();
-                return () => {
-                        setPd({});
-                }
+                return () => setPd({});
         }, [pdCallback])
         const [Key, setKey] = useState(1);
         const routeFunc = () => {

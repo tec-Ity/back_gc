@@ -13,9 +13,7 @@ export default function Pds(props) {
 	)
         useEffect(() => {
                 PdsCallback();
-                return () =>{
-                        setPds([])
-                }
+                return () => setPds([]);
         }, [PdsCallback])
         return (
                 <div>

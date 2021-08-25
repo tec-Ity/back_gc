@@ -25,9 +25,7 @@ export default function Shop() {
         )
         useEffect(() => {
                 shopCallback();
-                return () => {
-                        setShop({});
-                }
+                return () => setShop({});
         }, [shopCallback])
         const setKeyComp = (key) => {
                 setComp(Number(key));

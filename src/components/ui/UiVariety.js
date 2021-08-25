@@ -1,10 +1,13 @@
 import React, {useState} from 'react'
-import styleUi from '../js/conf/styleUi';
+import styleUi from '../../js/conf/styleUi';
+
+import UiCards from './UiCards';
+import UiRows from './UiRows';
 
 export default function UiVariety(props) {
         const [keyUi, setKeyUi] = useState(styleUi.init);
         const [activeBtns, setActiveBtns] = useState(['btn-success', 'btn-outline-success']);
-        const {UiRow, UiCard, Objects} = props;
+        const { UiCard, UiRow, Objs, clickEvent } = props;
         const changeUi = ( iBtn) => {
                 // 变化样式组件
                 setKeyUi(styleUi.arr[iBtn]);
@@ -16,9 +19,9 @@ export default function UiVariety(props) {
         const componentUI = () => {
                 switch (keyUi) {
                         case styleUi.arr[0]:
-                                return <UiRow   Objects={Objects} />                
+                                return <UiRows  UiRow={UiRow} Objs={Objs} clickEvent={clickEvent} />                
                         case styleUi.arr[1]:
-                                return <UiCard   Objects={Objects} />
+                                return <UiCards UiCard={UiCard}   Objs={Objs} clickEvent={clickEvent} />
                         default:
                                 return <div> Not exist this UI </div>
                 }

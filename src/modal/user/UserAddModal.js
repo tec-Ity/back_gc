@@ -1,12 +1,13 @@
 import  React , { useState, useEffect, useCallback } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-import { getObjs_Prom, fetch_Prom } from "../../../js/api";
-import RowIpt from "../../../components/basic/RowIpt";
-import confUser from "../../../js/conf/confUser";
-import threshold from "../../../js/conf/threshold";
-import { get_DNS } from "../../../js/api";
+import { getObjs_Prom, fetch_Prom } from "../../js/api";
+import confUser from "../../js/conf/confUser";
+import threshold from "../../js/conf/threshold";
 
+import RowIpt from "../../components/basic/RowIpt";
+import UiCards from "../../components/ui/UiCards";
+import ShopCard from "../../components/ui/shop/ShopCart";
 
 export default function UserAddModal(props) {
 	const {show, onHide, saveSuccess} = props;	// 模板的显示隐藏
@@ -21,7 +22,7 @@ export default function UserAddModal(props) {
 		phonePre: "0039",
 		phone: "",
 		Shop: "",
-		role: 105,
+		role: 0,
 	}); // 创建的数据
 	
 	const apiShops = "/Shops";
@@ -32,19 +33,21 @@ export default function UserAddModal(props) {
 	const [Shops, setShops] = useState([]);
 	const [ShopSearch, setShopSearch] = useState("");
 
-	const chgShopSearch = () => (e) => {
+	const iptShopSearch = () => (e) => {
 		const search = e.target.value;
 		setFormdata((pre) =>({...pre, "Shop": ""}));
 		setShopSearch(search);
 		getObjs_Prom(`${apiShops}?search=${search}`, Shops, setShops, true);
+		console.log(Shops)
 	}
-	const clickShopCard = (id, code) => (e) => {
-		setFormdata((pre) =>({...pre, "Shop": id}));
-		setShopSearch(code);
+	const clickShopCard = (Obj) => (e) => {
+		setFormdata((pre) =>({...pre, "Shop": Obj._id}));
+		setShopSearch(Obj.code);
 		setShops([])
 	}
-	const chgFormdata = (type) => (e) => setFormdata((pre) => ({ ...pre, [type]: e.target.value }));
-	
+
+	const iptFormdata = (type) => (e) => setFormdata((pre) => ({ ...pre, [type]: e.target.value }));
+
 	const roleFilterShops = (selRole) => {
 		if(selRole > 100) {
 			setIsShop(true);
@@ -83,7 +86,10 @@ export default function UserAddModal(props) {
 	  }, []);
 	  useEffect(() => {
 		UserAddCallback();
-		return () => setShops([]);
+		return () => {
+			setShops([]);
+			setShopSearch("");
+		}
 	  }, [UserAddCallback]);
 
 	return (
@@ -95,17 +101,17 @@ export default function UserAddModal(props) {
 			<Modal.Body>
 				<form>
 					<RowIpt rowClass={`my-3 ${text_flow}`}>
-						<input type="text" className="form-control" id="code-ipt" onChange={chgFormdata("code")} label="Codice" value={formdata.code} />
-						<input type="text" className="form-control" id="nome-ipt" onChange={chgFormdata("nome")} label="Name" value={formdata.nome} />
+						<input type="text" className="form-control" id="code-ipt" onChange={iptFormdata("code")} label="Codice" value={formdata.code} />
+						<input type="text" className="form-control" id="nome-ipt" onChange={iptFormdata("nome")} label="Name" value={formdata.nome} />
 					</RowIpt>
 
 					<RowIpt rowClass={`my-3 ${text_flow}`}>
-						<input type="password" className="form-control" id="pwd-ipt" onChange={chgFormdata("pwd")} label="Password" value={formdata.pwd} />
+						<input type="password" className="form-control" id="pwd-ipt" onChange={iptFormdata("pwd")} label="Password" value={formdata.pwd} />
 					</RowIpt>
 
 					<RowIpt rowClass={`my-3 ${text_flow}`}>
-						<input type="text" className="form-control" id="phonePre-ipt" onChange={chgFormdata("phonePre")} colnum="col-4 col-md-2" label="Phone" value={formdata.phonePre} />
-						<input type="text" className="form-control" onChange={chgFormdata("phone")} colnum="col-8" value={formdata.phone} />
+						<input type="text" className="form-control" id="phonePre-ipt" onChange={iptFormdata("phonePre")} colnum="col-4 col-md-2" label="Phone" value={formdata.phonePre} />
+						<input type="text" className="form-control" onChange={iptFormdata("phone")} colnum="col-8" value={formdata.phone} />
 					</RowIpt>
 
 					<RowIpt rowClass={`my-3 ${text_flow}`}>
@@ -113,7 +119,7 @@ export default function UserAddModal(props) {
 							<option>please select</option>
 							{
 								confUser.role_Arrs.map(item => {
-									return (item>curRole) &&<option key={item} value={item}>{confUser.role[item].cn}</option> 
+									return (item>curRole) &&<option key={item} value={item}>{confUser.role[item]?.cn}</option> 
 								})
 							}
 						</select>
@@ -132,35 +138,24 @@ export default function UserAddModal(props) {
 							</select>
 						</RowIpt>
 					*/}
+
 					{
 						isShop &&(<>
 							<div className={`row ${text_flow}`}>
 								<label htmlFor="Shop-ipt" className={`col-md-2 col-form-label ${formdata.Shop&&"text-success"}`}> Shop</label>
 								<div className="col-md-10">
-									<input type="text" className="form-control" id="Shop-ipt" onChange={chgShopSearch()}  value={ShopSearch} />
+									<input type="text" className="form-control" id="Shop-ipt" onChange={iptShopSearch()}  value={ShopSearch} />
 								</div>
 							</div>
-							<div className="row mt-3">
-								{
-									Shops.map(Shop => {
-										return (
-											<div className="col-6 col-md-4 col-lg-3" key={Shop._id}>
-												<div className="card" onClick={clickShopCard(Shop._id, Shop.code)}>
-													<img alt={Shop.code} className="img-neat" src={`${get_DNS()}${Shop.img_url}`} style={{width: "100px",height:"100px"}} />
-													<div className="card-body">
-														<h5 className="card-title">{Shop.code} title</h5>
-														<p className="card-text">{Shop.nome}</p>
-														<p className="card-text">{Shop.addr}</p>
-													</div>
-												</div>
-											</div>
-										)
-									})
-								}
+
+							<div className="row">
+								<div className="col-md-2"></div>
+								<div className="col-md-10">
+									<UiCards UiCard={ShopCard} Objs={Shops} cols="col-6 col-md-4 col-xl-3 mt-2" clickEvent={clickShopCard}/>
+								</div>
 							</div>
 						</>)
 					}
-
 				</form>
 			</Modal.Body>
 
