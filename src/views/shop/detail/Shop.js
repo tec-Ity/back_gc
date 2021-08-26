@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom'
 import { useParams } from 'react-router'
 import { getObj_Prom} from '../../../js/api'
 
-import  {getRole} from '../../../js/conf/confUser';
+import  {getRolePath} from '../../../js/conf/confUser';
 import NavBread from '../../../components/NavBread'
 
 import ShopBasic from './ShopBasic'
 import ShopAreas from './ShopAreas'
 import ShopProds from './ShopProds'
 export default function Shop() {
-        const role = getRole();
+        const rolePath = getRolePath();
 
         const {id} = useParams();
         const apiShop = `/Shop/${id}`;
@@ -32,7 +32,7 @@ export default function Shop() {
         }
         return (<>
                 <NavBread activePage="ShopDetail">
-                        <Link to={`/${role.val}/shops`}>Shops</Link>
+                        <Link to={`/${rolePath}/shops`}>Shops</Link>
                 </NavBread>
                 <div>
                         <div className="form-inline my-3">

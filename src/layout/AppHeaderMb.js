@@ -34,8 +34,8 @@ export default function AppHeaderMb(props) {
 									{
 										props.links?.map(item => {
 											return (
-												<li  key={item.labal} className="nav-item">
-													<NavLink className="nav-link" to={item.to}>{item.labal}</NavLink>
+												<li  key={item.label} className="nav-item">
+													<NavLink className="nav-link" to={item.to}>{item.label}</NavLink>
 												</li>
 											)
 										})

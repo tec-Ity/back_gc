@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react";
+import  { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router";
 
-import { getRole } from "../../../js/conf/confUser";
+import { getRolePath } from "../../../js/conf/confUser";
 import { getObjs_Prom } from "../../../js/api";
+import { getLang } from "../../../js/lang/frontLang";
 
 import UiVariety from "../../../components/ui/UiVariety";
 import UserCard from "../../../components/ui/user/UserCart";
 import UserRow from "../../../components/ui/user/UserRow";
 
-import UserAddModal from "../../../modal/user/UserAddModal";
+import UserPostModal from "../../../modal/user/UserPostModal";
 import NavBread from "../../../components/NavBread";
 
 export default function Users(props) {
   const hist = useHistory();
-  const role = getRole();
+  const rolePath = getRolePath();
   const apiUsers = "/Users";
   
   const [Objs, setObjs] = useState([]);
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   const saveSuccess = (object) => {
     const nxtUser = [object, ...Objs]
@@ -25,7 +26,7 @@ export default function Users(props) {
   }
 
   const clickCardEvent = (object) => (e) => {
-    hist.push(`/${role.val}/user/${object._id}`)
+    hist.push(`/${rolePath}/user/${object._id}`)
   }
 
   const usersCall = useCallback(() => {
@@ -39,11 +40,11 @@ export default function Users(props) {
 
   return (
     <>
-      <NavBread  activePage="Users"></NavBread>
+      <NavBread  activePage={getLang('navLabel').users}></NavBread>
 
       <div className="text-right">
         <button className="btn btn-info" onClick={() => setModalShow(true)}> + </button>
-        <UserAddModal show={modalShow} onHide={() => setModalShow(false)} saveSuccess={saveSuccess}/>
+        <UserPostModal show={modalShow} onHide={() => setModalShow(false)} saveSuccess={saveSuccess}/>
       </div>
 
       <UiVariety UiCard={UserCard} UiRow={UserRow} Objs={Objs} clickEvent={clickCardEvent} />

@@ -1,7 +1,7 @@
 import { Switch, Route, Redirect} from 'react-router-dom';
 
-import HomePage from '../views/_home/HomePage';
-import Errpage from '../views/_home/Errpage';
+import HomePage from '../views/_index/HomePage';
+import Errpage from '../views/_index/Errpage';
 
 import OwerRouter from './OwerRouter';
 import MgerRouter from './MgerRouter';
@@ -13,7 +13,7 @@ export default function AppRouter(props) {
 	return (
 		<Switch>
 			<Route path="/home" ><HomePage login={props.login}/></Route>
-			
+
 			<Route path="/errpage" component={Errpage} />
 			
 			<Route path="/ower" component={OwerRouter} />

@@ -2,31 +2,24 @@ import  React , { useState, useEffect, useCallback } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 import { getObjs_Prom, fetch_Prom } from "../../js/api";
-import confUser from "../../js/conf/confUser";
 import threshold from "../../js/conf/threshold";
+import {role_Arrs} from "../../js/conf/confUser"
+import { getLang } from "../../js/lang/frontLang";
 
 import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";
 import ShopCard from "../../components/ui/shop/ShopCart";
 
-export default function UserAddModal(props) {
-	const {show, onHide, saveSuccess} = props;	// 模板的显示隐藏
+export default function UserPutModal(props) {
+	const {show, onHide,  Obj, saveSuccess} = props;	// 模板的显示隐藏
 	const text_flow = (window.innerWidth >= threshold.pc_mb)?"text-right": "text-left";
 
 	const curRole = parseInt(localStorage.getItem('role'));
 	
-	const [formdata, setFormdata] = useState({
-		code: "test1", 
-		pwd: "111111",
-		nome: "",
-		phonePre: "0039",
-		phone: "",
-		Shop: "",
-		role: 0,
-	}); // 创建的数据
+	const [formdata, setFormdata] = useState(Obj); // 创建的数据
 	
 	const apiShops = "/Shops";
-	const apiUserPost = "/UserPost";
+	const apiUserPut = "/UserPut";
 
 	// const [pathShop, setPathShop] = useState('');
 	const [isShop, setIsShop] = useState(false);		// 是否有店铺选项
@@ -38,7 +31,6 @@ export default function UserAddModal(props) {
 		setFormdata((pre) =>({...pre, "Shop": ""}));
 		setShopSearch(search);
 		getObjs_Prom(`${apiShops}?search=${search}`, Shops, setShops, true);
-		console.log(Shops)
 	}
 	const clickShopCard = (Obj) => (e) => {
 		setFormdata((pre) =>({...pre, "Shop": Obj._id}));
@@ -66,36 +58,39 @@ export default function UserAddModal(props) {
 		setFormdata((pre) => ({ ...pre, "role":selRole }));
 	} 
 
-	const crtSubmit = async () => {
+	const putSubmit = async () => {
 		try {
 			// console.log(formdata)
-			const userPost_res = await fetch_Prom(apiUserPost, "POST", {obj:formdata});
-			if (userPost_res.status === 200) {
-				saveSuccess(userPost_res.data.object);
+			const userPut_res = await fetch_Prom(apiUserPut, "PUT", {obj:formdata});
+			if (userPut_res.status === 200) {
+				saveSuccess(userPut_res.data.object);
 				onHide();
 			} else {
-				console.log(userPost_res.message);
+				console.log("UserPutModal", userPut_res.message);
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	  };
-	const UserAddCallback = useCallback(() => {
+	const UserPutCallback = useCallback(() => {
+                const {code, nome, phonePre, phone, role, Shop} = Obj;
+                setFormdata({code, nome, phonePre, phone, role, Shop});
 		roleFilterShops(formdata.role);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, []);
 	  useEffect(() => {
-		UserAddCallback();
+		UserPutCallback();
 		return () => {
 			setShops([]);
 			setShopSearch("");
 		}
-	  }, [UserAddCallback]);
+	  }, [UserPutCallback]);
 
 	return (
+		
 		<Modal onHide={onHide} show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter"> Create </Modal.Title>
+				<Modal.Title id="contained-modal-title-vcenter"> Update </Modal.Title>
 			</Modal.Header>
 
 			<Modal.Body>
@@ -103,10 +98,6 @@ export default function UserAddModal(props) {
 					<RowIpt rowClass={`my-3 ${text_flow}`}>
 						<input type="text" className="form-control" id="code-ipt" onChange={iptFormdata("code")} label="Codice" value={formdata.code} />
 						<input type="text" className="form-control" id="nome-ipt" onChange={iptFormdata("nome")} label="Name" value={formdata.nome} />
-					</RowIpt>
-
-					<RowIpt rowClass={`my-3 ${text_flow}`}>
-						<input type="password" className="form-control" id="pwd-ipt" onChange={iptFormdata("pwd")} label="Password" value={formdata.pwd} />
 					</RowIpt>
 
 					<RowIpt rowClass={`my-3 ${text_flow}`}>
@@ -118,26 +109,12 @@ export default function UserAddModal(props) {
 						<select className="form-control" id="role-ipt" data-style="btn-info"onChange={chgRole()}  label="Role" defaultValue={formdata.role}>
 							<option>please select</option>
 							{
-								confUser.role_Arrs.map(item => {
-									return (item>curRole) &&<option key={item} value={item}>{confUser.role[item]?.cn}</option> 
+								role_Arrs.map(item => {
+									return (item>curRole) &&<option key={item} value={item}>{getLang('role')[item]}</option> 
 								})
 							}
 						</select>
 					</RowIpt>
-
-					{/*
-						isShop &&
-						<RowIpt rowClass={`my-3 ${text_flow}`}>
-							<select className="form-control" id="shop-ipt" data-style="btn-info"onChange={chgRole()}  label="Shop">
-								<option>please select</option>
-								{
-									Shops.map(item => {
-										return <option key={item._id} value={item._id}>{item.code}</option>
-									})
-								}
-							</select>
-						</RowIpt>
-					*/}
 
 					{
 						isShop &&(<>
@@ -161,7 +138,7 @@ export default function UserAddModal(props) {
 
 			<Modal.Footer>
 				<Button variant="secondary"onClick={onHide}>Close</Button>
-				<Button variant="primary" onClick={crtSubmit}> Save Changes </Button>
+				<Button variant="primary" onClick={putSubmit}> Save Changes </Button>
 			</Modal.Footer>
 		</Modal>
 	);

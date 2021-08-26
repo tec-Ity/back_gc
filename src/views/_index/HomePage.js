@@ -1,22 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
-import {useHistory} from "react-router-dom";
+import { useState } from "react";
 
 import { fetch_Prom } from '../../js/api';
-import { nav_replace } from '../../js/unique/appLayout/redirectFile';
 
 export default function HomePage(props) {
-	const hist = useHistory();
 	
 	const [formdata, setFormdata] = useState({code:"", pwd:""});
-	const chgFormdata = type => e => setFormdata(pre => ({...pre, [type]: e.target.value}));
 
-	const nav_replaceCall = useCallback(
-		({role_path}) => { hist.replace(role_path) },
-		[hist],
-	)
-	useEffect(() => {
-		nav_replaceCall( {...nav_replace(localStorage.getItem("role"))} );
-	}, [nav_replaceCall])
+	const chgFormdata = type => e => setFormdata(pre => ({...pre, [type]: e.target.value}));
 
 	const login = async() => {
 		try {
@@ -30,7 +20,7 @@ export default function HomePage(props) {
 				localStorage.setItem("role", curUser.role);
 				if(curUser.Shop) localStorage.setItem("curShop", curUser.Shop);
 			}
-            props.login()
+			props.login()
 		} catch(error) {
 			console.log(error);
 		}

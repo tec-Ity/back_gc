@@ -1,10 +1,16 @@
 import React, {useState} from 'react'
-import styleUi from '../../js/conf/styleUi';
 
 import UiCards from './UiCards';
 import UiRows from './UiRows';
 
+import { getLang } from '../../js/lang/frontLang';
+
 export default function UiVariety(props) {
+        const langFile = 'UiVariety';
+        const  styleUi  = {
+                init: "card",
+                arr: ['card', 'row'],
+        }
         const [keyUi, setKeyUi] = useState(styleUi.init);
         const [activeBtns, setActiveBtns] = useState(['btn-success', 'btn-outline-success']);
         const { UiCard, UiRow, Objs, clickEvent } = props;
@@ -19,17 +25,17 @@ export default function UiVariety(props) {
         const componentUI = () => {
                 switch (keyUi) {
                         case styleUi.arr[0]:
-                                return <UiRows  UiRow={UiRow} Objs={Objs} clickEvent={clickEvent} />                
-                        case styleUi.arr[1]:
                                 return <UiCards UiCard={UiCard}   Objs={Objs} clickEvent={clickEvent} />
+                        case styleUi.arr[1]:
+                                return <UiRows  UiRow={UiRow} Objs={Objs} clickEvent={clickEvent} />                
                         default:
                                 return <div> Not exist this UI </div>
                 }
         }
         return (
                 <>
-                        <button className={`btn  mx-3 ${activeBtns[0]}`} onClick={() => changeUi(0)}>List</button>
-                        <button className={`btn  mx-3 ${activeBtns[1]}`} onClick={() => changeUi(1)}>Card</button>
+                        <button className={`btn  mx-3 ${activeBtns[0]}`} onClick={() => changeUi(0)}>{getLang(langFile).card}</button>
+                        <button className={`btn  mx-3 ${activeBtns[1]}`} onClick={() => changeUi(1)}>{getLang(langFile).list}</button>
                         <div className="mt-5">
                                 { componentUI() }
                         </div>

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import {getRole} from '../js/conf/confUser';
+import {getLang, getLangName} from '../js/lang/frontLang';
+import { getRolePath } from "../js/conf/confUser";
+
 import threshold from "../js/conf/threshold";
+import LangUpdModal from "../modal/lang/LangUpdModal";
 import './AppHeaderPc.css'
 
 export default function AppHeaderPc(props) {
+	const {links, name} = props; // 导航栏 icon lable 及 tooltip
+
 	const [spreadbar, setSpreadbar] = useState('');
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-	const role = getRole();
 
 	const logout = () => {
 		localStorage.removeItem("accessToken");
@@ -20,7 +24,11 @@ export default function AppHeaderPc(props) {
 	const togSidebar = () => setSpreadbar((spreadbar==='') ? 'spreadbar' : '' );
 	const hideSidebar = () => { /* setSpreadbar('') */  }
 
-	const {links, name} = props; // 导航栏 icon lable 及 tooltip
+	const [lang, setLang] = useState(localStorage.getItem('lang'));
+	const [modalShow, setModalShow] = useState(false);
+	const showModal = () => {
+		setModalShow(true)
+	}
 
 	useEffect(() => {
 		window.addEventListener("resize", () => setInnerWidth(window.innerWidth)); 
@@ -31,7 +39,7 @@ export default function AppHeaderPc(props) {
 		<div className={`sidebar ${spreadbar}`}>
 			<div className="logo_content">
 				<div className="logo">
-					<i className='bx bxl-c-plus-plus'></i>
+					<i className='bx bx-doughnut-chart'></i>
 					<div className="logo_name">GC</div>
 				</div>
 				<i className='bx bx-menu' id="btn" onClick={togSidebar}></i>
@@ -50,10 +58,10 @@ export default function AppHeaderPc(props) {
 							<li key={`headerNavLink${index}`} onClick={hideSidebar}>
 								<NavLink to={link.to} className="">
 									<i className={link.icon}></i>
-									<span className="links_name">{link.labal}</span>
+									<span className="links_name">{getLang('navLabel')[link.label]}</span>
 								</NavLink>
 								{
-									innerWidth >= threshold.tooltip && <span className="tooltip">{link.labal}</span>
+									innerWidth >= threshold.tooltip && <span className="tooltip">{getLang('navLabel')[link.label]}</span>
 								}
 								
 							</li>
@@ -62,15 +70,23 @@ export default function AppHeaderPc(props) {
 				}
 			</ul>
 			{
-				props.name !== null&&
+				name !== null&&
 				<div className="profile_content">
 					<div className="profile">
 						<div className="profile_details">
-							<img src={`${process.env.PUBLIC_URL}/dabai.jpeg`} alt="avatar" />
-							<div className="name_job">
-								<div className="name">{name}</div>
-								<div className="job">{role?.cn}</div>
+							<NavLink to={`/${getRolePath()}/center`}>
+								<img src={`${process.env.PUBLIC_URL}/dabai.jpeg`} alt="avatar" />
+							</NavLink>
+							<div className="name_job" onClick={showModal}>
+								<div className="name">{name} {getLang('role')[localStorage.getItem('role')]}</div>
+								<div className="job" >{getLangName()} </div>
 							</div>
+							<LangUpdModal  
+								show={modalShow} 
+								onHide={() => setModalShow(false)} 
+								lang={lang} 
+								setLang={(newLang)=>setLang(newLang)}
+							/>
 						</div>
 						<i className='bx bx-log-out'  id="log_out" onClick={logout}></i>
 					</div>
