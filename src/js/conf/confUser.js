@@ -2,10 +2,11 @@ const  confUser  = {
 	"role_Arrs": [ 1, 3, 5, 101, 105 ],
 	"role": {
 		"1": {path: 'ower',
-			route: [ 
+			roleNav: [ 
 				{icon:"bx bx-user", 			     label: "users", to: "/ower/users"}, 
 				{icon:"bx bx-building-house", 	 label: "shops", to: "/ower/shops"}, 
 				{icon:"bx bx-package", 			label: "pds", to: "/ower/pds"}, 
+				{icon:"bx bx-list-ul", 				label: "orders", to: "/ower/orders"},
 				{icon:"bx bxs-package", 		label: "prods", to: "/ower/prods"},
 				{icon:"bx bx-category",			 label: "categs", to: "/ower/categs"},
 				{icon:"bx bx-purchase-tag-alt", label: "brands", to: "/ower/brands"},
@@ -13,7 +14,7 @@ const  confUser  = {
 			]
 		},
 		"3": {path: 'mger',
-			route: [ 
+			roleNav: [ 
 				{icon:"bx bx-user", 				label: "users",		  to: "/mger/users"}, 
 				{icon:"bx bx-building-house", 	   label: "shops", 		to: "/mger/shops"},
 				{icon:"bx bx-package", 			   label: "pds",		 to: "/mger/pds"}, 
@@ -24,21 +25,21 @@ const  confUser  = {
 			]
 		},
 		"5": {path: 'sfer', 
-			route: [
+			roleNav: [
 				{icon:"bx bxs-package", label: "prods", to: "/sfer/prods"},
 				{icon:"bx bx-category", label: "categs", to: "/sfer/categs"},
 				{icon:"bx bx-purchase-tag-alt", label: "brands", to: "/sfer/brands"},
 			]
 		},
 		"101": {path: 'bser', 
-			route: [
+			roleNav: [
 				{icon:"bx bx-user", label: "users", to: "/bser/users"}, 
 				{icon:"bx bxs-package", label: "prods", to: "/bser/prods"},
 				{icon:"bx bx-cog", label: "setting", to: "/bser/setting"},
 			]
 		},
 		"105": {path: 'wker', 
-			route: [ 
+			roleNav: [ 
 				{icon:"bx bxs-package", label: "prods", to: "/bser/prods"},
 			]
 		},
@@ -56,8 +57,9 @@ export const getRolePath = (role = parseInt(localStorage.getItem('role'))) => {
 
 export const getRoleRoute = (role = parseInt(localStorage.getItem('role'))) => {
 	if(!confUser.role_Arrs.includes(role)) return [];
-	return  confUser.role[role].route;
+	return  confUser.role[role].roleNav;
 }
+
 export const role_Arrs = confUser.role_Arrs;
 
 export default confUser

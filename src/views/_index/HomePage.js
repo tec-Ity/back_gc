@@ -18,6 +18,7 @@ export default function HomePage(props) {
 				localStorage.setItem("refreshToken", login_res.data?.refreshToken);
 				localStorage.setItem("name",  name);
 				localStorage.setItem("role", curUser.role);
+				localStorage.setItem("_id", curUser._id);
 				if(curUser.Shop) localStorage.setItem("curShop", curUser.Shop);
 			}
 			props.login()

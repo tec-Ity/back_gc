@@ -30,7 +30,7 @@ const fetchProm = (api, method, bodyObj) => {
       const resPromise = await fetch(api_server, fetchObj);
       // console.log("resPromise", resPromise)
       const result = await resPromise.json();
-      // console.log("result", result)
+      console.log("result", result)
       resolve(result);
     } catch (error) {
       resolve({ status: 500, message: `[front] fetchProm Error: ${error}` });
@@ -121,6 +121,7 @@ export const logout_Prom = () => {
     }
   });
 };
+
 export const refreshToken_Prom = () => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -136,6 +137,7 @@ export const refreshToken_Prom = () => {
       const result = await resPromise.json();
       if (result.status === 200) {
         localStorage.setItem("accessToken", result.data?.accessToken);
+        localStorage.setItem("refreshToken", result.data?.refreshToken);
       } else {
         localStorage.removeItem("refreshToken");
         window.location.reload();

@@ -21,6 +21,7 @@ const  frontLang  = {
                 'navLabel': { 
                         users: '用户列表', user: '用户', 
                         shops: '店铺列表', shop: '店铺',
+                        orders: '订单列表',
                         pds: '产品列表', pd: '产品', 
                         prods: '商品列表', prod: '商品', 
                         categs: '分类列表', categ: '分类', 
@@ -33,14 +34,14 @@ const  frontLang  = {
 	},
         'en': {
                 'role': {1: "owner", 3: "manager", 5: "staff", 101: 'boss', 105: 'worker'},
-                'navLabel': { users: 'Users', shops: 'Shops', pds: 'Products', prods: 'Goods', categs: 'Category', brands: 'Brands', setting: 'Setting', },
+                'navLabel': { users: 'Users', shops: 'Shops', pds: 'Products', orders: 'Orders',prods: 'Goods', categs: 'Category', brands: 'Brands', setting: 'Setting', },
                 'NavBread': { home: 'Home', },
                 'LangUpdModal': { title: 'Change Langeuage', close: 'Close', },
                 'UiVariety': { card: 'Card', list: 'List', },
         },
         'it': {
                 'role': {1: "proprietario", 3: "manager", 5: "personale", 101: 'capo', 105: 'lavoratore'},
-                'navLabel': { users: 'Utenti', shops: 'Negozio', pds: 'Prodotto', prods: 'Merce', categs: 'Categoria', brands: 'Marca', setting: 'Impostazioni', },
+                'navLabel': { users: 'Utenti', shops: 'Negozio', pds: 'Prodotto', orders: 'ordini', prods: 'Merce', categs: 'Categoria', brands: 'Marca', setting: 'Impostazioni', },
                 'NavBread': { home: 'Home', },
                 'LangUpdModal': { title: 'Combia Lingua', close: 'Chiudere', },
                 'UiVariety': { card: 'Carta', list: 'Lista', },
