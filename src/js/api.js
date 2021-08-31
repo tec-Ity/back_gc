@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import api_DNS from "./_dns";
 
 const api_version = "/api/b1";
@@ -30,10 +29,11 @@ const fetchProm = (api, method, bodyObj) => {
       const resPromise = await fetch(api_server, fetchObj);
       // console.log("resPromise", resPromise)
       const result = await resPromise.json();
-      console.log("result", result)
+      // console.log("result", result)
       resolve(result);
     } catch (error) {
-      resolve({ status: 500, message: `[front] fetchProm Error: ${error}` });
+      console.log('fetchProm Error:', error);
+      resolve({ status: 500, message: `[front] fetchProm Error` });
     }
   });
 };

@@ -1,30 +1,19 @@
 import { useState } from "react";
+import { useHistory } from "react-router";
+import { useDispatch } from 'react-redux';
 
-import { fetch_Prom } from '../../js/api';
+import { reducerLogin} from '../../features/authSlice';
 
-export default function HomePage(props) {
-	
+export default function HomePage() {
+	const hist = useHistory();
+	const dispatch = useDispatch();
 	const [formdata, setFormdata] = useState({code:"", pwd:""});
 
 	const chgFormdata = type => e => setFormdata(pre => ({...pre, [type]: e.target.value}));
 
-	const login = async() => {
-		try {
-			const login_res = await fetch_Prom('/login', 'POST', formdata);
-			if (login_res.status === 200) {
-				const curUser = login_res.data.curUser
-				const name = curUser.nome?curUser.nome:curUser.code;
-				localStorage.setItem("accessToken", login_res.data?.accessToken);
-				localStorage.setItem("refreshToken", login_res.data?.refreshToken);
-				localStorage.setItem("name",  name);
-				localStorage.setItem("role", curUser.role);
-				localStorage.setItem("_id", curUser._id);
-				if(curUser.Shop) localStorage.setItem("curShop", curUser.Shop);
-			}
-			props.login()
-		} catch(error) {
-			console.log(error);
-		}
+	const login = () => {
+		dispatch(reducerLogin({formdata}));
+		hist.replace('/')
 	}
 
 	return (

@@ -12,7 +12,7 @@ import WkerRouter from './WkerRouter';
 export default function AppRouter(props) {
 	return (
 		<Switch>
-			<Route path="/home" ><HomePage login={props.login}/></Route>
+			<Route path="/home" ><HomePage /></Route>
 
 			<Route path="/errpage" component={Errpage} />
 			

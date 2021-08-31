@@ -1,13 +1,18 @@
 import { NavLink, Link } from "react-router-dom";
+import {useHistory} from "react-router";
+import { useSelector, useDispatch } from 'react-redux';
+import {selectUser, selectLinks, reducerLogout} from '../features/authSlice'
 
-export default function AppHeaderMb(props) {
+export default function AppHeaderMb() {
+	const hist = useHistory();
+	const dispatch = useDispatch();
+
+	const curUser = useSelector(selectUser);
+	const roleLinks = useSelector(selectLinks);
+
 	const logout = () => {
-		localStorage.removeItem("accessToken");
-		localStorage.removeItem("refreshToken");
-		localStorage.removeItem("role");
-		localStorage.removeItem("name");
-		localStorage.removeItem("curShop");
-		props.logout();
+		dispatch(reducerLogout());
+		hist.replace('/home')
 	}
 	return (<>
 		{/* <div style={{height: "61px", backgroundColor: "#000000"}}></div> */}
@@ -29,19 +34,22 @@ export default function AppHeaderMb(props) {
 						
 						<ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
 							{
-								props.name !== null&&
+								curUser && curUser.code &&
 								 <>
 									{
-										props.links?.map(item => {
+										roleLinks?.map(link => {
 											return (
-												<li  key={item.label} className="nav-item">
-													<NavLink className="nav-link" to={item.to}>{item.label}</NavLink>
+												<li  key={link.label} className="nav-item">
+													<NavLink className="nav-link" to={link.to}>
+														<i className={link.icon}></i>
+														{link.label}
+													</NavLink>
 												</li>
 											)
 										})
 									}
 									<li  className="nav-item">
-										<NavLink className="text-dark nav-link"  to='/center'>center:{props.name}</NavLink>
+										<NavLink className="text-dark nav-link"  to='/center'>center:{curUser.nome || curUser.code}</NavLink>
 									</li>
 									<li  className="nav-item">
 										<div className="text-danger  nav-link" onClick={logout}>logout</div>

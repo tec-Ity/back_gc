@@ -1,5 +1,6 @@
-import { Switch, Route} from 'react-router-dom';
+import { Switch, Route, Redirect} from 'react-router-dom';
 
+import HomeRole from '../views/_index/HomeRole';
 import Users from '../views/user/list/Users';
 import User from '../views/user/detail/User';
 import Shops from '../views/shop/list/Shops';
@@ -15,6 +16,7 @@ export default function OwerRouter() {
 	return (
 		<div className="container mt-3">
 			<Switch>
+				<Route path="/ower/home" > <HomeRole /> </Route>
 				<Route path="/ower/users" > <Users /> </Route>
 				<Route path="/ower/user/:id" > <User /> </Route>
 				<Route path="/ower/shops" > <Shops /> </Route>
@@ -26,6 +28,7 @@ export default function OwerRouter() {
 				<Route path="/ower/center" > <Center /> </Route>
 
 				<Route path="/ower/reload" > <Reload/> </Route>
+				<Redirect to="/ower/home" />
 			</Switch>
 		</div>
 	)

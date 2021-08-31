@@ -46,16 +46,12 @@ const  confUser  = {
 	},
 }
 
-export const getRole = (role = parseInt(localStorage.getItem('role'))) => {
-	return  confUser.role[role];
-}
-
 export const getRolePath = (role = parseInt(localStorage.getItem('role'))) => {
 	if(!confUser.role_Arrs.includes(role)) return 'home';
 	return  confUser.role[role].path;
 }
 
-export const getRoleRoute = (role = parseInt(localStorage.getItem('role'))) => {
+export const getRoleLinks = (role = parseInt(localStorage.getItem('role'))) => {
 	if(!confUser.role_Arrs.includes(role)) return [];
 	return  confUser.role[role].roleNav;
 }

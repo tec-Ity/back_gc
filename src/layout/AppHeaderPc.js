@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
+import {useHistory} from "react-router";
 import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+
+import {selectUser, selectLinks, reducerLogout} from '../features/authSlice'
+
 import {getLang, getLangName} from '../js/lang/frontLang';
 import { getRolePath } from "../js/conf/confUser";
-
 import threshold from "../js/conf/threshold";
 import LangUpdModal from "../modal/lang/LangUpdModal";
 import './AppHeaderPc.css'
 
-export default function AppHeaderPc(props) {
-	const {links, name} = props; // 导航栏 icon lable 及 tooltip
+export default function AppHeaderPc() {
+	const hist = useHistory();
+	const dispatch = useDispatch();
 
+	const curUser = useSelector(selectUser);
+	const roleLinks = useSelector(selectLinks);
+	
 	const [spreadbar, setSpreadbar] = useState('');
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
 	const logout = () => {
-		localStorage.removeItem("accessToken");
-		localStorage.removeItem("refreshToken");
-		localStorage.removeItem("role");
-		localStorage.removeItem("name");
-		localStorage.removeItem("curShop");
-		props.logout();
+		dispatch(reducerLogout());
+		hist.replace('/home')
 	}
 	const togSidebar = () => setSpreadbar((spreadbar==='') ? 'spreadbar' : '' );
 	const hideSidebar = () => { /* setSpreadbar('') */  }
@@ -53,7 +57,7 @@ export default function AppHeaderPc(props) {
 					}
 				</li>
 				{
-					links&& links.map((link, index) => {
+					roleLinks&& roleLinks.map((link, index) => {
 						return (
 							<li key={`headerNavLink${index}`} onClick={hideSidebar}>
 								<NavLink to={link.to} className="">
@@ -70,7 +74,7 @@ export default function AppHeaderPc(props) {
 				}
 			</ul>
 			{
-				name !== null&&
+				curUser && curUser.code &&
 				<div className="profile_content">
 					<div className="profile">
 						<div className="profile_details">
@@ -78,7 +82,7 @@ export default function AppHeaderPc(props) {
 								<img src={`${process.env.PUBLIC_URL}/dabai.jpeg`} alt="avatar" />
 							</NavLink>
 							<div className="name_job" onClick={showModal}>
-								<div className="name">{name} {getLang('role')[localStorage.getItem('role')]}</div>
+								<div className="name">{curUser.nome || curUser.code} {getLang('role')[localStorage.getItem('role')]}</div>
 								<div className="job" >{getLangName()} </div>
 							</div>
 							<LangUpdModal  

@@ -13,19 +13,19 @@ import ShopCard from "../../components/ui/shop/ShopCart";
 export default function UserPutModal(props) {
 	const {show, onHide,  Obj, saveSuccess} = props;	// 模板的显示隐藏
 	const text_flow = (window.innerWidth >= threshold.pc_mb)?"text-right": "text-left";
-	
+
 	const curRole = parseInt(localStorage.getItem('role'));
-	
+
 	const [formdata, setFormdata] = useState(Obj); // 创建的数据
-	
+
 	const apiShops = "/Shops";
 	const apiUserPut = "/UserPut/"+Obj._id;
-	
+
 	// const [pathShop, setPathShop] = useState('');
 	const [isShop, setIsShop] = useState(false);		// 是否有店铺选项
 	const [Shops, setShops] = useState([]);
 	const [ShopSearch, setShopSearch] = useState(Obj.Shop?Obj.Shop.code:"");
-	
+
 	const iptShopSearch = () => (e) => {
 		const search = e.target.value;
 		setFormdata((pre) =>({...pre, "Shop": ""}));
@@ -37,9 +37,9 @@ export default function UserPutModal(props) {
 		setShopSearch(Obj.code);
 		setShops([])
 	}
-	
+
 	const iptFormdata = (type) => (e) => setFormdata((pre) => ({ ...pre, [type]: e.target.value }));
-	
+
 	const roleFilterShops = (selRole) => {
 		if(selRole > 100) {
 			setIsShop(true);
@@ -57,7 +57,7 @@ export default function UserPutModal(props) {
 		roleFilterShops(selRole)
 		setFormdata((pre) => ({ ...pre, "role":selRole }));
 	} 
-	
+
 	const putSubmit = async () => {
 		try {
 			const userPut_res = await fetch_Prom(apiUserPut, "PUT", {obj:formdata});
@@ -90,7 +90,7 @@ export default function UserPutModal(props) {
 	  }, [UserPutCallback]);
 
 	return (
-		
+
 		<Modal onHide={onHide} show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter"> Update </Modal.Title>
@@ -142,7 +142,7 @@ export default function UserPutModal(props) {
 					}
 				</form>
 			</Modal.Body>
-			
+
 			<Modal.Footer>
 				<Button variant="secondary"onClick={onHide}>Close</Button>
 				<Button variant="primary" onClick={putSubmit}> Save Changes </Button>

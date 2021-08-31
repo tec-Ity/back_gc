@@ -21,7 +21,7 @@ export default function Orders() {
                                         <div className="col-6 col-md-4 mt-2   ">{order.code} </div>
                                         <div className="col-3 col-md-2 mt-2   ">{order.Shop.code} </div>
                                         <div className="col-3 col-md-4 mt-2 d-none d-md-block  ">{order.Client.code} </div>
-                                        <div className="col-3 col-md-2 mt-2   ">{order.imp} </div>
+                                        <div className="col-3 col-md-2 mt-2   ">{order.imp.toFixed(2)} </div>
                                 </div>
                         )})
                 }

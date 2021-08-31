@@ -32,7 +32,7 @@ export const orderSlice = createSlice({
       state.orders  = action.payload;
       let imps = 0
       action.payload.forEach(item =>  imps += item.imp);
-      state.imp_Orders = imps;
+      state.imp_Orders = imps.toFixed(2);
     },
     [getOrders.rejected]: (state, action) => { state.status = 'Error'; state.errMsg = action.error.message; }
   }

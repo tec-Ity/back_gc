@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams, useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../features/authSlice';
 
 import { getObj_Prom, fetch_Prom } from '../../../js/api';
 import  {getRolePath} from '../../../js/conf/confUser';
@@ -12,6 +14,8 @@ import NavBread from '../../../components/NavBread';
 
 export default function User() {
   const hist = useHistory();
+  const curUser = useSelector(selectUser);
+
     const {id} = useParams();
     const apiUser = `/user/${id}`;
     const rolePath = getRolePath();
@@ -44,7 +48,7 @@ export default function User() {
           Obj._id && (
             <div className="text-right">
               {
-                localStorage.getItem('_id') !== Obj._id &&
+                curUser._id !== Obj._id &&
                 <button className="btn btn-danger mx-4" onClick={deleteDB}> <i className='bx bx-edit-alt'></i> </button>
               }
               <button className="btn btn-info" onClick={() => setModalShow(true)}> <i className='bx bx-edit-alt'></i> </button>
