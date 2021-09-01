@@ -49,7 +49,7 @@ export default function User() {
             <div className="text-right">
               {
                 curUser._id !== Obj._id &&
-                <button className="btn btn-danger mx-4" onClick={deleteDB}> <i className='bx bx-edit-alt'></i> </button>
+                <button className="btn btn-danger mx-4" onClick={deleteDB}> <i className='bx bx-trash'></i> </button>
               }
               <button className="btn btn-info" onClick={() => setModalShow(true)}> <i className='bx bx-edit-alt'></i> </button>
               <UserPutModal show={modalShow} onHide={() => setModalShow(false)} Obj={Obj} saveSuccess={saveSuccess}/>
