@@ -1,8 +1,8 @@
-const defaultLang = "cn";
+const defaultLang = "zh";
 /* 系统语言列表 */
-export const systemLangs =  ['cn', 'en', 'it'];
+export const systemLangs =  ['zh', 'en', 'it'];
 
-export const LangConf = { 'cn': '中文', 'en': 'English', 'it': 'Italiano', }
+export const LangConf = { 'zh': '中文', 'en': 'English', 'it': 'Italiano', }
 
 /* 获取语言名称 */
 export const getLangName = (lang = localStorage.getItem('lang')) => {
@@ -15,8 +15,8 @@ export const filterLang = (lang) => {
         return lang;
 }
 
-const  frontLang  = {
-	'cn': {
+const  language  = {
+	'zh': {
                 'role': {1: "拥有者", 3: "管理者", 5: "超级员工", 101: '店铺老板', 105: '店铺员工'},
                 'navLabel': { 
                         users: '用户列表', user: '用户', 
@@ -50,7 +50,7 @@ const  frontLang  = {
 
 export const getLang = (langFile, lang = localStorage.getItem('lang')) => {
         lang = filterLang(lang);
-        if(frontLang[lang][langFile]) return  frontLang[lang][langFile];
+        if(language[lang][langFile]) return  language[lang][langFile];
         return {};
 }
 

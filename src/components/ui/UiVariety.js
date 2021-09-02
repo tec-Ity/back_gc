@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import UiCards from './UiCards';
 import UiRows from './UiRows';
 
-import { getLang } from '../../js/lang/frontLang';
+import { getLang } from '../../js/lang/language';
 
 export default function UiVariety(props) {
         const langFile = 'UiVariety';

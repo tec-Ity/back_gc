@@ -1,7 +1,7 @@
 import './NavBread.css'
 import { Link } from 'react-router-dom';
 import {getRolePath} from '../js/conf/confUser';
-import { getLang } from '../js/lang/frontLang';
+import { getLang } from '../js/lang/language';
 
 export default function NavBread(props) {
         const langFile = 'NavBread';

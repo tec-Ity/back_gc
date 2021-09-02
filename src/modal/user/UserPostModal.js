@@ -4,7 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { getObjs_Prom, fetch_Prom } from "../../js/api";
 import threshold from "../../js/conf/threshold";
 import {role_Arrs} from "../../js/conf/confUser";
-import { getLang } from "../../js/lang/frontLang";
+import { getLang } from "../../js/lang/language";
 
 import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";

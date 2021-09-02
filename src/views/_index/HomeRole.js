@@ -1,13 +1,19 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'; 
 import { useSelector } from 'react-redux';
 import {selectUser} from '../../features/authSlice'
-import { getLang } from '../../js/lang/frontLang';
+import { getLang } from '../../js/lang/language';
 export default function HomeRole() {
 
         const curUser = useSelector(selectUser);
 
         return (
                 <div className="text-center mt-5">
+                        <FormattedMessage
+                        id='hello'
+                        description='say hello to Howard.'
+                        defaultMessage='Hello, Howard 111'
+                        />
                         <h1>Welcom to Union City manage System </h1>
                         {
                                 (curUser && curUser.code)

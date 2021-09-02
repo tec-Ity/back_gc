@@ -6,7 +6,7 @@ import { selectUser } from '../../../features/authSlice';
 
 import { getObj_Prom, fetch_Prom } from '../../../js/api';
 import  {getRolePath} from '../../../js/conf/confUser';
-import { getLang } from '../../../js/lang/frontLang';
+import { getLang } from '../../../js/lang/language';
 
 import UserPutModal from "../../../modal/user/UserPutModal";
 

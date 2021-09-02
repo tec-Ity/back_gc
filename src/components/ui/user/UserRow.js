@@ -1,5 +1,5 @@
 import {get_DNS} from '../../../js/api'
-import {getLang} from '../../../js/lang/frontLang';
+import {getLang} from '../../../js/lang/language';
 
 export default function UserRow(props) {
 

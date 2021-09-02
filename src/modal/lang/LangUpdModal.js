@@ -2,8 +2,8 @@ import { useHistory } from "react-router";
 import { Modal, Button } from "react-bootstrap";
 
 import { getRolePath } from "../../js/conf/confUser";
-import {LangConf, systemLangs } from "../../js/lang/frontLang";
-import {getLang} from "../../js/lang/frontLang";
+import {LangConf, systemLangs } from "../../js/lang/language";
+import {getLang} from "../../js/lang/language";
 
 export default function LangUpdModal(props) {
         const langFile = 'LangUpdModal';
@@ -13,8 +13,8 @@ export default function LangUpdModal(props) {
 
         const storeLang = (item) => (e) => {
                 localStorage.setItem("lang", item);
-                setLang(localStorage.getItem('lang'));
                 // window.location.reload();
+                setLang(localStorage.getItem('lang'));
                 hist.push(`/${rolePaht}/reload`)
                 onHide();
         }

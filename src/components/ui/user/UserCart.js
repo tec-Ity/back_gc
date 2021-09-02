@@ -1,6 +1,6 @@
 import React from 'react'
 import {get_DNS} from '../../../js/api'
-import {getLang} from '../../../js/lang/frontLang';
+import {getLang} from '../../../js/lang/language';
 
 export default function UserCard(props) {
         const { Obj, clickEvent } = props;

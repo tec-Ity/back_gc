@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 
 import { getRolePath } from "../../../js/conf/confUser";
 import { getObjs_Prom } from "../../../js/api";
-import { getLang } from "../../../js/lang/frontLang";
+import { getLang } from "../../../js/lang/language";
 
 import UiVariety from "../../../components/ui/UiVariety";
 import UserCard from "../../../components/ui/user/UserCart";

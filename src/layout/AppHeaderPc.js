@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import {selectUser, selectLinks, reducerLogout} from '../features/authSlice'
 
-import {getLang, getLangName} from '../js/lang/frontLang';
+import {getLang, getLangName} from '../js/lang/language';
 import { getRolePath } from "../js/conf/confUser";
 import threshold from "../js/conf/threshold";
 import LangUpdModal from "../modal/lang/LangUpdModal";
