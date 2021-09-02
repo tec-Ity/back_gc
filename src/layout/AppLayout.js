@@ -2,6 +2,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import {  useHistory} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { IntlProvider } from 'react-intl';
+import intlLang from '../js/lang/lang';
 
 import AppRouter from '../router/AppRouter';
 import AppHeaderPc from './AppHeaderPc';
@@ -15,6 +17,7 @@ export default function AppLayout() {
 	const hist = useHistory();
 	const dispatch = useDispatch();
 	const curUser = useSelector(selectUser);
+	const [lang, setLang] = useState(localStorage.getItem('lang'));
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 	const AppCallback = useCallback(
 		() => {
@@ -48,20 +51,35 @@ export default function AppLayout() {
 		window.addEventListener("resize", () => setInnerWidth(window.innerWidth));  
 		AppCallback();
 	}, [AppCallback])
-
-	return ( <>
-		{
-			innerWidth >= threshold.pc_mb
-			?  (<>
-				<AppHeaderPc  />
-				<div className="home_content">
-					<AppRouter />
-				</div>
-			</>)
-			 : (<>
-				 <AppHeaderMb  />
-				 <AppRouter />
-			</>)
+	const chooseLocale = ()=> {
+		let lang = localStorage.getItem('lang');
+		if(!lang) lang = navigator.language;
+		
+		switch(lang) {
+			case 'en-US': return intlLang.en_US;
+			case 'zh-CN': return intlLang.zh_CN;
+			case 'it': return intlLang.it;
+			default: return intlLang.zh_CN;
 		}
+	}
+	return ( <>
+		<IntlProvider
+		locale={'it'}
+		messages={chooseLocale()}
+		>
+			{
+				innerWidth >= threshold.pc_mb
+				?  (<>
+					<AppHeaderPc lang={lang} setLang={setLang} />
+					<div className="home_content">
+						<AppRouter />
+					</div>
+				</>)
+				: (<>
+					<AppHeaderMb  />
+					<AppRouter />
+				</>)
+			}
+	</IntlProvider>
 	</> );
 }

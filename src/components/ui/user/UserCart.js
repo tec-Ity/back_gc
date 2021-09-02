@@ -1,6 +1,6 @@
 import React from 'react'
 import {get_DNS} from '../../../js/api'
-import {getLang} from '../../../js/lang/language';
+import { FormattedMessage } from 'react-intl'; 
 
 export default function UserCard(props) {
         const { Obj, clickEvent } = props;
@@ -22,7 +22,12 @@ export default function UserCard(props) {
                                 />
                                 <div className="card-body">
                                         <h5 className="card-title">{Obj.code+(Obj.nome && `[${Obj.nome}]`)}</h5>
-                                        <p className="card-text">{getLang('role')[Obj.role]}</p>
+                                        <p className="card-text">
+                                                <FormattedMessage
+                                                        id={`role-${Obj.role}`}
+                                                        defaultMessage={Obj.role}
+                                                />
+                                        </p>
                                         <p className="card-text">{Obj.Shop?.code}</p>
                                 </div>
                         </div>

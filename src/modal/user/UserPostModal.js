@@ -4,6 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { getObjs_Prom, fetch_Prom } from "../../js/api";
 import threshold from "../../js/conf/threshold";
 import {role_Arrs} from "../../js/conf/confUser";
+// import { FormattedMessage } from 'react-intl'; 
 import { getLang } from "../../js/lang/language";
 
 import RowIpt from "../../components/basic/RowIpt";
@@ -120,7 +121,10 @@ export default function UserPostModal(props) {
 							<option>please select</option>
 							{
 								role_Arrs.map(item => {
-									return (item>curRole) &&<option key={item} value={item}>{getLang('role')[item]}</option> 
+									return (item>curRole) &&<option key={item} value={item}>
+										{getLang('role')[item]}
+										{/* <FormattedMessage id={`role-${item}`} defaultMessage={item} /> */}
+									</option> 
 								})
 							}
 						</select>

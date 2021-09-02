@@ -1,5 +1,5 @@
 import {get_DNS} from '../../../js/api'
-import {getLang} from '../../../js/lang/language';
+import { FormattedMessage } from 'react-intl'; 
 
 export default function UserRow(props) {
 
@@ -22,7 +22,12 @@ export default function UserRow(props) {
                                         <div className="row">
                                                 <div className="mt-3 col-4 col-md-2 text-primary" onClick={clickEvent&&clickEvent(Obj)}>{Obj.code}</div>
                                                 <div className="mt-3 col-4 col-md-2">{Obj.nome}</div>
-                                                <div className="mt-3 col-4 col-md-2">{getLang('role')[Obj.role]}</div>
+                                                <div className="mt-3 col-4 col-md-2">
+                                                        <FormattedMessage
+                                                                id={`role-${Obj.role}`}
+                                                                defaultMessage={Obj.role}
+                                                        />
+                                                </div>
                                                 <div className="mt-3 col-4 col-md-2">{Obj.Shop?.code}</div>
                                                 <div className="mt-3 col-8 col-md-4">{Obj.phone && Obj.phonePre+' '+Obj.phone}</div>
                                         </div>

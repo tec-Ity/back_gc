@@ -3,10 +3,9 @@ import { Modal, Button } from "react-bootstrap";
 
 import { getRolePath } from "../../js/conf/confUser";
 import {LangConf, systemLangs } from "../../js/lang/language";
-import {getLang} from "../../js/lang/language";
+import { FormattedMessage } from 'react-intl'; 
 
 export default function LangUpdModal(props) {
-        const langFile = 'LangUpdModal';
         const rolePaht = getRolePath();
         const hist = useHistory();
         const {onHide, show, lang, setLang} = props;
@@ -22,7 +21,12 @@ export default function LangUpdModal(props) {
 	return (
 		<Modal onHide={onHide} show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter"> {getLang(langFile).title} </Modal.Title>
+				<Modal.Title id="contained-modal-title-vcenter">
+                                        <FormattedMessage
+                                                id='LangUpdModal-title'
+                                                defaultMessage='LangUpdModal-title'
+                                        />
+                                </Modal.Title>
 			</Modal.Header>
 
 			<Modal.Body>
@@ -43,7 +47,12 @@ export default function LangUpdModal(props) {
 			</Modal.Body>
 
 			<Modal.Footer>
-				<Button variant="secondary"onClick={onHide}>{getLang(langFile).close}</Button>
+				<Button variant="secondary"onClick={onHide}>
+                                        <FormattedMessage
+                                                id='close'
+                                                defaultMessage='close'
+                                        />
+                                </Button>
 			</Modal.Footer>
 		</Modal>
 	);

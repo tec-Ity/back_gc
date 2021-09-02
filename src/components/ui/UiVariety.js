@@ -3,10 +3,9 @@ import React, {useState} from 'react'
 import UiCards from './UiCards';
 import UiRows from './UiRows';
 
-import { getLang } from '../../js/lang/language';
+import { FormattedMessage } from 'react-intl'; 
 
 export default function UiVariety(props) {
-        const langFile = 'UiVariety';
         const  styleUi  = {
                 init: "card",
                 arr: ['card', 'row'],
@@ -34,8 +33,18 @@ export default function UiVariety(props) {
         }
         return (
                 <>
-                        <button className={`btn  mx-3 ${activeBtns[0]}`} onClick={() => changeUi(0)}>{getLang(langFile).card}</button>
-                        <button className={`btn  mx-3 ${activeBtns[1]}`} onClick={() => changeUi(1)}>{getLang(langFile).list}</button>
+                        <button className={`btn  mx-3 ${activeBtns[0]}`} onClick={() => changeUi(0)}>
+                                <FormattedMessage
+                                        id='card'
+                                        defaultMessage='card'
+                                />
+                        </button>
+                        <button className={`btn  mx-3 ${activeBtns[1]}`} onClick={() => changeUi(1)}>
+                                <FormattedMessage
+                                        id='list'
+                                        defaultMessage='list'
+                                />
+                        </button>
                         <div className="mt-5">
                                 { componentUI() }
                         </div>

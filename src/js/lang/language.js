@@ -1,10 +1,10 @@
-const defaultLang = "zh";
+const defaultLang = "zh-CN";
 /* 系统语言列表 */
-export const systemLangs =  ['zh', 'en', 'it'];
+export const systemLangs =  ['zh-CN', 'en-US', 'it'];
 
-export const LangConf = { 'zh': '中文', 'en': 'English', 'it': 'Italiano', }
+export const LangConf = { 'zh-CN': '中文', 'en-US': 'English', 'it': 'Italiano', }
 
-/* 获取语言名称 */
+/* 获取语言名称       deleteMy*/
 export const getLangName = (lang = localStorage.getItem('lang')) => {
         if(!systemLangs.includes(lang)) lang = defaultLang;
         return LangConf[lang];
@@ -16,7 +16,7 @@ export const filterLang = (lang) => {
 }
 
 const  language  = {
-	'zh': {
+	'zh-CN': {
                 'role': {1: "拥有者", 3: "管理者", 5: "超级员工", 101: '店铺老板', 105: '店铺员工'},
                 'navLabel': { 
                         users: '用户列表', user: '用户', 
@@ -32,7 +32,7 @@ const  language  = {
                 'LangUpdModal': { title: '语言变更', close: '关闭', },
                 'UiVariety': { card: '卡片', list: '列表', },
 	},
-        'en': {
+        'en-US': {
                 'role': {1: "owner", 3: "manager", 5: "staff", 101: 'boss', 105: 'worker'},
                 'navLabel': { users: 'Users', shops: 'Shops', pds: 'Products', orders: 'Orders',prods: 'Goods', categs: 'Category', brands: 'Brands', setting: 'Setting', },
                 'NavBread': { home: 'Home', },

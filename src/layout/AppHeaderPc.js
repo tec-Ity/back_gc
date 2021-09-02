@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import {useHistory} from "react-router";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
+import { FormattedMessage } from 'react-intl'; 
 
 import {selectUser, selectLinks, reducerLogout} from '../features/authSlice'
 
-import {getLang, getLangName} from '../js/lang/language';
 import { getRolePath } from "../js/conf/confUser";
 import threshold from "../js/conf/threshold";
 import LangUpdModal from "../modal/lang/LangUpdModal";
 import './AppHeaderPc.css'
 
-export default function AppHeaderPc() {
+export default function AppHeaderPc(props) {
 	const hist = useHistory();
 	const dispatch = useDispatch();
 
@@ -28,7 +28,7 @@ export default function AppHeaderPc() {
 	const togSidebar = () => setSpreadbar((spreadbar==='') ? 'spreadbar' : '' );
 	const hideSidebar = () => { /* setSpreadbar('') */  }
 
-	const [lang, setLang] = useState(localStorage.getItem('lang'));
+	const {lang, setLang} = props;
 	const [modalShow, setModalShow] = useState(false);
 	const showModal = () => {
 		setModalShow(true)
@@ -62,10 +62,21 @@ export default function AppHeaderPc() {
 							<li key={`headerNavLink${index}`} onClick={hideSidebar}>
 								<NavLink to={link.to} className="">
 									<i className={link.icon}></i>
-									<span className="links_name">{getLang('navLabel')[link.label]}</span>
+									<span className="links_name">
+										<FormattedMessage
+											id={`navLabel-${link.label}`}
+											defaultMessage={link.label}
+										/>
+									</span>
 								</NavLink>
 								{
-									innerWidth >= threshold.tooltip && <span className="tooltip">{getLang('navLabel')[link.label]}</span>
+									innerWidth >= threshold.tooltip && 
+									<span className="tooltip">
+										<FormattedMessage
+											id={`navLabel-${link.label}`}
+											defaultMessage={link.label}
+										/>
+									</span>
 								}
 								
 							</li>
@@ -82,8 +93,18 @@ export default function AppHeaderPc() {
 								<img src={`${process.env.PUBLIC_URL}/dabai.jpeg`} alt="avatar" />
 							</NavLink>
 							<div className="name_job" onClick={showModal}>
-								<div className="name">{curUser.nome || curUser.code} {getLang('role')[localStorage.getItem('role')]}</div>
-								<div className="job" >{getLangName()} </div>
+								<div className="name">{curUser.nome || curUser.code} &nbsp;
+									<FormattedMessage
+										id={`role-${localStorage.getItem('role')}`}
+										defaultMessage={localStorage.getItem('role')}
+									/>
+								</div>
+								<div className="job" >
+									<FormattedMessage
+										id='curLang'
+										defaultMessage='language'
+									/>
+								 </div>
 							</div>
 							<LangUpdModal  
 								show={modalShow} 

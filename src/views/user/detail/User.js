@@ -6,7 +6,7 @@ import { selectUser } from '../../../features/authSlice';
 
 import { getObj_Prom, fetch_Prom } from '../../../js/api';
 import  {getRolePath} from '../../../js/conf/confUser';
-import { getLang } from '../../../js/lang/language';
+import { FormattedMessage } from 'react-intl'; 
 
 import UserPutModal from "../../../modal/user/UserPutModal";
 
@@ -41,8 +41,8 @@ export default function User() {
         return () => setObj([]);
       }, [usersCall]);
     return (<>
-        <NavBread activePage={getLang('navLabel').user}>
-            <Link to={`/${rolePath}/users`}>{getLang('navLabel').users}</Link>
+        <NavBread activePage={<FormattedMessage id='navLabel-user' defaultMessage='user' />}>
+            <Link to={`/${rolePath}/users`}><FormattedMessage id='navLabel-users' defaultMessage='users' /></Link>
         </NavBread>
         {
           Obj._id && (

@@ -1,16 +1,22 @@
 import './NavBread.css'
 import { Link } from 'react-router-dom';
 import {getRolePath} from '../js/conf/confUser';
-import { getLang } from '../js/lang/language';
+import { FormattedMessage } from 'react-intl'; 
 
 export default function NavBread(props) {
-        const langFile = 'NavBread';
         const {children, activePage} = props;
         const rolePath = getRolePath();
         return (<>
                 <nav className="bradcrumb">
                         <ol className="breadcrumb">
-                                <li className="breadcrumb-item"><Link to={`/${rolePath}`}>{getLang(langFile).home}</Link> </li>
+                                <li className="breadcrumb-item">
+                                        <Link to={`/${rolePath}`}>
+                                                <FormattedMessage
+                                                        id='homepage'
+                                                        defaultMessage='homepage'
+                                                />
+                                        </Link>
+                                </li>
                                 {
                                         children === undefined
                                         ? <></>
