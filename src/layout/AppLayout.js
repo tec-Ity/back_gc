@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {  useHistory} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { IntlProvider } from 'react-intl';
-import intlLang from '../js/lang/lang';
+import intlLang, {systemLangs} from '../js/lang/confLang';
 
 import AppRouter from '../router/AppRouter';
 import AppHeaderPc from './AppHeaderPc';
@@ -54,13 +54,11 @@ export default function AppLayout() {
 	const chooseLocale = ()=> {
 		let lang = localStorage.getItem('lang');
 		if(!lang) lang = navigator.language;
-		
-		switch(lang) {
-			case 'en-US': return intlLang.en_US;
-			case 'zh-CN': return intlLang.zh_CN;
-			case 'it': return intlLang.it;
-			default: return intlLang.zh_CN;
+		if(systemLangs.includes(lang)){
+			lang = lang.replace(/-/, "_")
+			return intlLang[lang];
 		}
+		return intlLang.zh_CN;
 	}
 	return ( <>
 		<IntlProvider

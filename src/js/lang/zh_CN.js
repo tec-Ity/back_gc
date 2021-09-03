@@ -4,6 +4,8 @@ const zh_CN = {
     "card":'卡片',
     "list": '列表',
     "close": '关闭',
+    "create": '创建',
+    "confirm": '确认',
     
     "role-1": '拥有者',
     "role-3": '管理者',
@@ -25,6 +27,8 @@ const zh_CN = {
     "navLabel-categ": '分类',
     "navLabel-brands": '品牌列表',
     "navLabel-brand": '品牌',
+    "navLabel-clients": '客户列表',
+    "navLabel-client": '客户',
     "navLabel-setting": '设置',
 
     "welcom-title": "欢迎来到 Union City 管理系统",

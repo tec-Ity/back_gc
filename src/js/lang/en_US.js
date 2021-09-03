@@ -4,6 +4,8 @@ const en_US = {
     "card":'Card',
     "list": 'List',
     "close": 'Close',
+    "create": 'Create',
+    "confirm": 'Confirm',
 
     "role-1": 'Owner',
     "role-3": 'Manager',
@@ -28,6 +30,8 @@ const en_US = {
     "navLabel-categ": 'Categ',
     "navLabel-brands": 'Brands',
     "navLabel-brand": 'Brand',
+    "navLabel-clients": 'Clients',
+    "navLabel-client": 'Client',
     "navLabel-setting": 'Setting',
 
     "welcom-title": "Welcom to Union City manage System",

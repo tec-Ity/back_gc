@@ -9,6 +9,7 @@ const  confUser  = {
 				{icon:"bx bx-list-ul", 				label: "orders", to: "/ower/orders"},
 				{icon:"bx bx-category",			 label: "categs", to: "/ower/categs"},
 				{icon:"bx bx-purchase-tag-alt", label: "brands", to: "/ower/brands"},
+				{icon:"bx bx-user-circle",		 label: "clients", to: "/ower/binds"},
 				{icon:"bx bx-cog", 				label: "setting", to: "/ower/setting"},
 			]
 		},
@@ -16,11 +17,12 @@ const  confUser  = {
 			roleNav: [ 
 				{icon:"bx bx-user", 				label: "users",		  to: "/mger/users"}, 
 				{icon:"bx bx-building-house", 	   label: "shops", 		to: "/mger/shops"},
-				{icon:"bx bx-package", 			   label: "pds",		 to: "/mger/pds"}, 
-				{icon:"bx bx-list-ul", 				label: "orders", to: "/ower/orders"},
-				{icon:"bx bx-category", 		   label: "categs", 	   to: "/mger/categs"},
-				{icon:"bx bx-purchase-tag-alt",     label: "brands", 		to: "/mger/brands"},
-				{icon:"bx bx-cog", 				label: "setting", 	    to: "/mger/setting"},
+				{icon:"bx bx-package", 			   label: "pds",		to: "/mger/pds"}, 
+				{icon:"bx bx-list-ul", 				label: "orders",	to: "/ower/orders"},
+				{icon:"bx bx-category", 		   label: "categs",		to: "/mger/categs"},
+				{icon:"bx bx-purchase-tag-alt",     label: "brands",	to: "/mger/brands"},
+				{icon:"bx bx-user-circle",		 label: "Client", 		to: "/mger/binds"},
+				{icon:"bx bx-cog", 				label: "setting", 	to: "/mger/setting"},
 			]
 		},
 		"5": {path: 'sfer', 

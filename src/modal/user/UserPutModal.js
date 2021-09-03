@@ -3,8 +3,8 @@ import { Modal, Button } from "react-bootstrap";
 
 import { getObjs_Prom, fetch_Prom } from "../../js/api";
 import threshold from "../../js/conf/threshold";
-import {role_Arrs} from "../../js/conf/confUser"
-import { getLang } from "../../js/lang/language";
+import { role_Arrs } from "../../js/conf/confUser"
+import { FormattedMessage } from "react-intl";
 
 import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";
@@ -115,7 +115,10 @@ export default function UserPutModal(props) {
 								<option>please select</option>
 								{
 									role_Arrs.map(item => {
-										return (item>curRole) &&<option key={item} value={item}>{getLang('role')[item]}</option> 
+										return (item>curRole) &&
+										<FormattedMessage id={`role-${item}`} key={item}>
+											{(message) => <option value={item}>{message}</option>}
+										</FormattedMessage>
 									})
 								}
 							</select>
@@ -144,8 +147,10 @@ export default function UserPutModal(props) {
 			</Modal.Body>
 
 			<Modal.Footer>
-				<Button variant="secondary"onClick={onHide}>Close</Button>
-				<Button variant="primary" onClick={putSubmit}> Save Changes </Button>
+				<Button variant="secondary"onClick={onHide}>
+					<FormattedMessage id='close' />
+				</Button>
+				<Button variant="primary" onClick={putSubmit}> <FormattedMessage id='confirm' /> </Button>
 			</Modal.Footer>
 		</Modal>
 	);

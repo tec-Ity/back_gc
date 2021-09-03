@@ -4,8 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { getObjs_Prom, fetch_Prom } from "../../js/api";
 import threshold from "../../js/conf/threshold";
 import {role_Arrs} from "../../js/conf/confUser";
-// import { FormattedMessage } from 'react-intl'; 
-import { getLang } from "../../js/lang/language";
+import { FormattedMessage } from 'react-intl'; 
 
 import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";
@@ -97,7 +96,12 @@ export default function UserPostModal(props) {
 	return (
 		<Modal onHide={onHide} show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter"> Create </Modal.Title>
+				<Modal.Title id="contained-modal-title-vcenter">
+					<FormattedMessage
+						id='create'
+						defaultMessage='Create'
+					/>
+				</Modal.Title>
 			</Modal.Header>
 
 			<Modal.Body>
@@ -121,10 +125,10 @@ export default function UserPostModal(props) {
 							<option>please select</option>
 							{
 								role_Arrs.map(item => {
-									return (item>curRole) &&<option key={item} value={item}>
-										{getLang('role')[item]}
-										{/* <FormattedMessage id={`role-${item}`} defaultMessage={item} /> */}
-									</option> 
+									return (item>curRole) &&
+									<FormattedMessage id={`role-${item}`} key={item}>
+										{(message) => <option value={item}>{message}</option>}
+									</FormattedMessage>
 								})
 							}
 						</select>
@@ -165,8 +169,18 @@ export default function UserPostModal(props) {
 			</Modal.Body>
 
 			<Modal.Footer>
-				<Button variant="secondary"onClick={onHide}>Close</Button>
-				<Button variant="primary" onClick={postSubmit}> Save Changes </Button>
+				<Button variant="secondary"onClick={onHide}>
+					<FormattedMessage
+						id='close'
+						defaultMessage='Close'
+					/>
+				</Button>
+				<Button variant="primary" onClick={postSubmit}>
+					<FormattedMessage
+						id='confirm'
+						defaultMessage='Confirm'
+					/>
+				</Button>
 			</Modal.Footer>
 		</Modal>
 	);

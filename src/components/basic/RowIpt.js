@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 
 export default function RowIpt(props) {
         const {children, rowClass} = props;
-        // console.log(children)
+        // console.log(children);
         let colMdNum = "col-md-8";
         if(Array.isArray(children)) {
                 if(children.length === 2) {

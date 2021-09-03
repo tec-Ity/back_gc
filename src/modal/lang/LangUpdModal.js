@@ -2,7 +2,7 @@ import { useHistory } from "react-router";
 import { Modal, Button } from "react-bootstrap";
 
 import { getRolePath } from "../../js/conf/confUser";
-import {LangConf, systemLangs } from "../../js/lang/language";
+import {LangConf, systemLangs } from "../../js/lang/confLang";
 import { FormattedMessage } from 'react-intl'; 
 
 export default function LangUpdModal(props) {
