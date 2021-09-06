@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { getObj_Prom} from '../../../js/api'
 
 import  {getRolePath} from '../../../js/conf/confUser';
-import NavBread from '../../../components/NavBread'
+import NavBread from '../../../components/universal/navBread/NavBread'
 
 import ShopBasic from './ShopBasic'
 import ShopAreas from './ShopAreas'

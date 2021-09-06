@@ -2,16 +2,16 @@ import React from 'react'
 
 export default function UiCards(props) {
 
-        const {UiCard, Objs, cols, clickEvent } = props;
+        const {UiCard, objects, cols, clickEvent } = props;
 
         return (<>
                 <div className="row">
                         {
-                                Objs && UiCard
-                                ? Objs.map(Obj => {
+                                objects && UiCard
+                                ? objects.map(object => {
                                         return (
-                                                <div className={cols? cols:"col-6 col-md-4 col-lg-3 mt-3"} key={Obj._id} >
-                                                        <UiCard Obj={Obj} clickEvent={clickEvent} />
+                                                <div className={cols? cols:"col-6 col-md-4 col-lg-3 mt-3"} key={object._id} >
+                                                        <UiCard object={object} clickEvent={clickEvent} />
                                                 </div>
                                         )
                                 })

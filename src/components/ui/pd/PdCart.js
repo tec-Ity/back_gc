@@ -2,27 +2,27 @@ import React from 'react'
 import {get_DNS} from '../../../js/api'
 
 export default function PdCard(props) {
-        const { Obj, clickEvent } = props;
+        const { object, clickEvent } = props;
         let img_url = `${process.env.PUBLIC_URL}/favicon.ico`;
-        if(Obj?.img_url) {
-                img_url = get_DNS()+Obj.img_url;
-        } else if(Obj?.img_urls?.length > 0) {
-                img_url = get_DNS()+Obj.img_urls[0];
+        if(object?.img_url) {
+                img_url = get_DNS()+object.img_url;
+        } else if(object?.img_urls?.length > 0) {
+                img_url = get_DNS()+object.img_urls[0];
         }
         return (<>
                 {
-                        Obj
-                        ? <div className="card"  onClick={clickEvent&&clickEvent(Obj)}>
+                        object
+                        ? <div className="card"  onClick={clickEvent&&clickEvent(object)}>
                                 <img 
                                         src={img_url}
                                         className="img-neat" 
-                                        alt={Obj.code}
+                                        alt={object.code}
                                         style={{width: "100px",height:"100px"}}
                                 />
                                 <div className="card-body">
-                                        <h5 className="card-title">{Obj.code}</h5>
-                                        <p className="card-text">{Obj.nome}</p>
-                                        <p className="card-text">{Obj.price}</p>
+                                        <h5 className="card-title">{object.code}</h5>
+                                        <p className="card-text">{object.nome}</p>
+                                        <p className="card-text">{object.price}</p>
                                 </div>
                         </div>
                         :<h3 className="text-danger"> PdCard parameter Error! </h3>

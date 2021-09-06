@@ -1,6 +1,6 @@
 import './NavBread.css'
 import { Link } from 'react-router-dom';
-import {getRolePath} from '../js/conf/confUser';
+import {getRolePath} from '../../../js/conf/confUser';
 import { FormattedMessage } from 'react-intl'; 
 
 export default function NavBread(props) {

@@ -1,13 +1,13 @@
 import React from 'react'
 
 export default function UiRows(props) {
-        const {UiRow, Objs, clickEvent } = props;
+        const {UiRow, objects, clickEvent } = props;
         return (<>
                 {
-                        Objs && UiRow
-                        ? Objs.map(Obj => {
+                        objects && UiRow
+                        ? objects.map(object => {
                                 return (
-                                        <UiRow Obj={Obj} clickEvent={clickEvent} key={Obj._id}/>
+                                        <UiRow object={object} clickEvent={clickEvent} key={object._id}/>
                                 )
                         })
                         : <h3 className="text-danger"> UiRows Component params Error! </h3>

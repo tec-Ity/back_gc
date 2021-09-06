@@ -41,9 +41,9 @@ export default function UserPostModal(props) {
 		getObjs_Prom(`${apiShops}?search=${search}`, Shops, setShops, true);
 		// console.log(Shops)
 	}
-	const clickShopCard = (Obj) => (e) => {
-		setFormdata((pre) =>({...pre, "Shop": Obj._id}));
-		setShopSearch(Obj.code);
+	const clickShopCard = (obj) => (e) => {
+		setFormdata((pre) =>({...pre, "Shop": obj._id}));
+		setShopSearch(obj.code);
 		setShops([])
 	}
 
@@ -160,7 +160,7 @@ export default function UserPostModal(props) {
 							<div className="row">
 								<div className="col-md-2"></div>
 								<div className="col-md-10">
-									<UiCards UiCard={ShopCard} Objs={Shops} cols="col-6 col-md-4 col-xl-3 mt-2" clickEvent={clickShopCard}/>
+									<UiCards UiCard={ShopCard} objects={Shops} cols="col-6 col-md-4 col-xl-3 mt-2" clickEvent={clickShopCard}/>
 								</div>
 							</div>
 						</>)

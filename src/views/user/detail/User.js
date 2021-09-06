@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 
 import UserPutModal from "../../../modal/user/UserPutModal";
 
-import NavBread from '../../../components/NavBread';
+import NavBread from '../../../components/universal/navBread/NavBread';
 
 export default function User() {
   const hist = useHistory();
@@ -19,10 +19,10 @@ export default function User() {
     const {id} = useParams();
     const apiUser = `/user/${id}`;
     const rolePath = getRolePath();
-    const [Obj, setObj] = useState({});
+    const [object, setObject] = useState({});
     const [modalShow, setModalShow] = useState(false);
-    const saveSuccess = (object) => {
-      getObj_Prom(apiUser, setObj);
+    const saveSuccess = (obj) => {
+      getObj_Prom(apiUser, setObject);
     }
     const deleteDB = async() => {
       const del_res = await fetch_Prom('/UserDelete/'+id, 'DELETE' )
@@ -33,43 +33,43 @@ export default function User() {
       }
     }
     const usersCall = useCallback(() => {
-      getObj_Prom(apiUser, setObj);
+      getObj_Prom(apiUser, setObject);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
         usersCall();
-        return () => setObj([]);
+        return () => setObject([]);
       }, [usersCall]);
     return (<>
         <NavBread activePage={<FormattedMessage id='navLabel-user' defaultMessage='user' />}>
             <Link to={`/${rolePath}/users`}><FormattedMessage id='navLabel-users' defaultMessage='users' /></Link>
         </NavBread>
         {
-          Obj._id && (
+          object._id && (
             <div className="text-right">
               {
-                curUser._id !== Obj._id &&
+                curUser._id !== object._id &&
                 <button className="btn btn-danger mx-4" onClick={deleteDB}> <i className='bx bx-trash'></i> </button>
               }
               <button className="btn btn-info" onClick={() => setModalShow(true)}> <i className='bx bx-edit-alt'></i> </button>
-              <UserPutModal show={modalShow} onHide={() => setModalShow(false)} Obj={Obj} saveSuccess={saveSuccess}/>
+              <UserPutModal show={modalShow} onHide={() => setModalShow(false)} object={object} saveSuccess={saveSuccess}/>
             </div>
           )
         }
 
         <div className="row">
-          <div className="col-4 col-md-2"> _id: </div> <div className="col-8 col-md-10"> {Obj._id} </div>
-          <div className="col-4 col-md-2"> code: </div> <div className="col-8 col-md-10"> {Obj.code} </div>
-          <div className="col-4 col-md-2"> nome: </div> <div className="col-8 col-md-10"> {Obj.nome} </div>
-          <div className="col-4 col-md-2"> phonePre: </div> <div className="col-8 col-md-10"> {Obj.phonePre} </div>
-          <div className="col-4 col-md-2"> phone: </div> <div className="col-8 col-md-10"> {Obj.phone} </div>
-          <div className="col-4 col-md-2"> role: </div> <div className="col-8 col-md-10"> {Obj.role} </div>
-          <div className="col-4 col-md-2"> is_blacklist: </div> <div className="col-8 col-md-10"> {Obj.is_blacklist} </div>
-          <div className="col-4 col-md-2"> is_shelf: </div> <div className="col-8 col-md-10"> {Obj.is_shelf} </div>
-          <div className="col-4 col-md-2"> is_usable: </div> <div className="col-8 col-md-10"> {Obj.is_usable} </div>
-          <div className="col-4 col-md-2"> at_last_login: </div> <div className="col-8 col-md-10"> {Obj.at_last_login} </div>
-          {Obj.Firm && <><div className="col-4 col-md-2"> Firm: </div> <div className="col-8 col-md-10"> {Obj.Firm.code} </div></>}
-          {Obj.Shop && <><div className="col-4 col-md-2"> Shop: </div> <div className="col-8 col-md-10"> {Obj.Shop.code} </div></>}
+          <div className="col-4 col-md-2"> _id: </div> <div className="col-8 col-md-10"> {object._id} </div>
+          <div className="col-4 col-md-2"> code: </div> <div className="col-8 col-md-10"> {object.code} </div>
+          <div className="col-4 col-md-2"> nome: </div> <div className="col-8 col-md-10"> {object.nome} </div>
+          <div className="col-4 col-md-2"> phonePre: </div> <div className="col-8 col-md-10"> {object.phonePre} </div>
+          <div className="col-4 col-md-2"> phone: </div> <div className="col-8 col-md-10"> {object.phone} </div>
+          <div className="col-4 col-md-2"> role: </div> <div className="col-8 col-md-10"> {object.role} </div>
+          <div className="col-4 col-md-2"> is_blacklist: </div> <div className="col-8 col-md-10"> {object.is_blacklist} </div>
+          <div className="col-4 col-md-2"> is_shelf: </div> <div className="col-8 col-md-10"> {object.is_shelf} </div>
+          <div className="col-4 col-md-2"> is_usable: </div> <div className="col-8 col-md-10"> {object.is_usable} </div>
+          <div className="col-4 col-md-2"> at_last_login: </div> <div className="col-8 col-md-10"> {object.at_last_login} </div>
+          {object.Firm && <><div className="col-4 col-md-2"> Firm: </div> <div className="col-8 col-md-10"> {object.Firm.code} </div></>}
+          {object.Shop && <><div className="col-4 col-md-2"> Shop: </div> <div className="col-8 col-md-10"> {object.Shop.code} </div></>}
         </div>
     </>)
 }

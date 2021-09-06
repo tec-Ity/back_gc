@@ -11,20 +11,20 @@ import UiCards from "../../components/ui/UiCards";
 import ShopCard from "../../components/ui/shop/ShopCart";
 
 export default function UserPutModal(props) {
-	const {show, onHide,  Obj, saveSuccess} = props;	// 模板的显示隐藏
+	const {show, onHide,  object, saveSuccess} = props;	// 模板的显示隐藏
 	const text_flow = (window.innerWidth >= threshold.pc_mb)?"text-right": "text-left";
 
 	const curRole = parseInt(localStorage.getItem('role'));
 
-	const [formdata, setFormdata] = useState(Obj); // 创建的数据
+	const [formdata, setFormdata] = useState(object); // 创建的数据
 
 	const apiShops = "/Shops";
-	const apiUserPut = "/UserPut/"+Obj._id;
+	const apiUserPut = "/UserPut/"+object._id;
 
 	// const [pathShop, setPathShop] = useState('');
 	const [isShop, setIsShop] = useState(false);		// 是否有店铺选项
 	const [Shops, setShops] = useState([]);
-	const [ShopSearch, setShopSearch] = useState(Obj.Shop?Obj.Shop.code:"");
+	const [ShopSearch, setShopSearch] = useState(object.Shop?object.Shop.code:"");
 
 	const iptShopSearch = () => (e) => {
 		const search = e.target.value;
@@ -32,9 +32,9 @@ export default function UserPutModal(props) {
 		setShopSearch(search);
 		getObjs_Prom(`${apiShops}?search=${search}`, Shops, setShops, true);
 	}
-	const clickShopCard = (Obj) => (e) => {
-		setFormdata((pre) =>({...pre, "Shop": Obj._id}));
-		setShopSearch(Obj.code);
+	const clickShopCard = (object) => (e) => {
+		setFormdata((pre) =>({...pre, "Shop": object._id}));
+		setShopSearch(object.code);
 		setShops([])
 	}
 
@@ -72,9 +72,9 @@ export default function UserPutModal(props) {
 		}
 	  };
 	const UserPutCallback = useCallback(() => {
-                const {code, nome, phonePre, phone, role } = Obj;
-		const Shop = Obj.Shop ? Obj.Shop._id : null;
-		if(Obj.Shop) {
+                const {code, nome, phonePre, phone, role } = object;
+		const Shop = object.Shop ? object.Shop._id : null;
+		if(object.Shop) {
 			// setShops
 		}
                 setFormdata({code, nome, phonePre, phone, role, Shop});
@@ -108,7 +108,7 @@ export default function UserPutModal(props) {
 						<input type="text" className="form-control" onChange={iptFormdata("phone")} colnum="col-8" value={formdata.phone} />
 					</RowIpt>
 					{
-						localStorage.getItem('_id') !== Obj._id && 
+						localStorage.getItem('_id') !== object._id && 
 						(<>
 						<RowIpt rowClass={`my-3 ${text_flow}`}>
 							<select className="form-control" id="role-ipt" data-style="btn-info"onChange={chgRole()}  label="Role" defaultValue={formdata.role}>
@@ -136,7 +136,7 @@ export default function UserPutModal(props) {
 								<div className="row">
 									<div className="col-md-2"></div>
 									<div className="col-md-10">
-										<UiCards UiCard={ShopCard} Objs={Shops} cols="col-6 col-md-4 col-xl-3 mt-2" clickEvent={clickShopCard}/>
+										<UiCards UiCard={ShopCard} objects={Shops} cols="col-6 col-md-4 col-xl-3 mt-2" clickEvent={clickShopCard}/>
 									</div>
 								</div>
 							</>)

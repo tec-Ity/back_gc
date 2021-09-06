@@ -66,15 +66,15 @@ export const fetch_Prom = (api, method = "GET", bodyObj) => {
   });
 };
 
-export const getObjs_Prom = async ( api, Objs = [], setObjs, isReload = false ) => {
+export const getObjs_Prom = async ( api, objects = [], setObjects, isReload = false ) => {
   try {
     const obj_res = await fetch_Prom(api);
     if (obj_res.status === 200) {
       const data = obj_res.data;
       if (isReload) {
-        setObjs(data.objects);
+        setObjects(data.objects);
       } else {
-        setObjs([...Objs, ...data.objects]);
+        setObjects([...objects, ...data.objects]);
       }
     }
   } catch (error) {

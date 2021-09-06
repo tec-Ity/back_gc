@@ -1,80 +1,65 @@
-import  { useState, useEffect, useCallback } from "react";
+import  { useState, useEffect } from "react";
 import { useHistory } from "react-router";
+import { FormattedMessage } from 'react-intl'; 
+import { useSelector, useDispatch } from 'react-redux';
+
+import {selectObjects, getObjects, postObject, unmountDB} from '../../../features/dbSlice'
+import {selectQuery, selectQueryStr, setQuery, unmountQuery} from '../../../features/querySlice'
 
 import { getRolePath } from "../../../js/conf/confUser";
-import { getObjs_Prom } from "../../../js/api";
-import { FormattedMessage } from 'react-intl'; 
 
 import UiVariety from "../../../components/ui/UiVariety";
 import UserCard from "../../../components/ui/user/UserCart";
 import UserRow from "../../../components/ui/user/UserRow";
 
 import UserPostModal from "../../../modal/user/UserPostModal";
-import NavBread from "../../../components/NavBread";
+import NavBread from "../../../components/universal/navBread/NavBread";
 
 export default function Users(props) {
   const hist = useHistory();
+  const dispatch = useDispatch();
   const rolePath = getRolePath();
-  const apiUsers = "/Users";
-  const getApiFilter = (apifilter) => {
-    const filters = [];
-    Object.keys(apifilter).forEach(key => {
-      if(apifilter[key]){
-        if(key === 'search') {
-          filters.push(`${key}=${apifilter[key].toUpperCase()}`)
-        } else {
-          filters.push(`${key}=${apifilter[key]}`);
-        }
-      } 
-    } );
-    if(filters.join('&')) {
-      return `?${filters.join('&')}`;
-    } else {
-      return '';
-    }
-  }
 
-  const [apiFilter, setApiFilter] = useState({
-    search: ''
-  });
-  const iptFilter = (type) => (e) => {
-    const curFilter = {...apiFilter, [type]: e.target.value};
-    setApiFilter(curFilter);
-    console.log(apiUsers+getApiFilter(curFilter))
-    getObjs_Prom(apiUsers+getApiFilter(curFilter), Objs, setObjs, true);
-  }
-  const [Objs, setObjs] = useState([]);
+  const query = useSelector(selectQuery);
+  const queryStr = useSelector(selectQueryStr);
+
+  const objects = useSelector(selectObjects);
   const [modalShow, setModalShow] = useState(false);
-  
-  const saveSuccess = (object) => {
-    const nxtUser = [object, ...Objs]
-    setObjs(nxtUser);
-  }
 
   const clickCardEvent = (object) => (e) => {
     hist.push(`/${rolePath}/user/${object._id}`)
   }
 
-  const usersCall = useCallback(() => {
-    getObjs_Prom(apiUsers+getApiFilter(apiFilter), Objs, setObjs, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   useEffect(() => {
-    usersCall();
-    return () => setObjs([]);
-  }, [usersCall]);
-
+    dispatch(getObjects({api: '/Users'+queryStr, isReload: true}));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryStr]);
+  // componentDidUnmount
+  console.log('render')
+  useEffect(() => { 
+    console.log('will mount')
+    return () => {
+    console.log("user un")
+      dispatch(unmountQuery())
+      dispatch(unmountDB());
+  } }, [dispatch]);
+  console.log("Users", objects)
   return (
     <>
       <NavBread  activePage={<FormattedMessage id='navLabel-users' defaultMessage='users'/>}></NavBread>
-      <input type="text"  onChange={iptFilter('search')} value={apiFilter.search} />
-      <div className="text-right">
-        <button className="btn btn-info" onClick={() => setModalShow(true)}> + </button>
-        <UserPostModal show={modalShow} onHide={() => setModalShow(false)} saveSuccess={saveSuccess}/>
-      </div>
 
-      <hr></hr>
-      <UiVariety UiCard={UserCard} UiRow={UserRow} Objs={Objs} clickEvent={clickCardEvent} />
+      <div className="text-right mb-3">
+        <button className="btn btn-info" onClick={() => setModalShow(true)}> + </button>
+        <UserPostModal 
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          saveSuccess={ (object) =>  dispatch(postObject(object))}
+          />
+      </div>
+      <input type="text"  className="form-control" onChange={(e)=> dispatch(setQuery({key: 'search', val: e.target.value}))} value={query.search} />
+
+      <hr/>
+      <UiVariety UiCard={UserCard} UiRow={UserRow} objects={objects} clickEvent={clickCardEvent} />
     </>
   );
 }
