@@ -6,9 +6,9 @@ export default function UiRows(props) {
                 {
                         objects && UiRow
                         ? objects.map(object => {
-                                return (
-                                        <UiRow object={object} clickEvent={clickEvent} key={object._id}/>
-                                )
+                                return object 
+                                ? <UiRow object={object} clickEvent={clickEvent} key={object._id}/>
+                                : <div>Date Error</div>
                         })
                         : <h3 className="text-danger"> UiRows Component params Error! </h3>
                 }

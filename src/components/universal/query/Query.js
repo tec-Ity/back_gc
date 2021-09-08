@@ -1,20 +1,24 @@
 import {useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import {selectQuery, setQuery, unmountQuery} from '../../../features/querySlice'
+import {selectQuery, selectQueryStr, setQuery, getObjects} from '../../../features/objectsSlice'
 
-export default function Query() {
+export default function Query(props) {
+        const {flagSlice, api} = props;
         const dispatch = useDispatch();
-        const query = useSelector(selectQuery);
+        const query = useSelector(selectQuery(flagSlice));
+        const queryStr = useSelector(selectQueryStr(flagSlice));
 
-        useEffect(() => { return () => {
-                dispatch(unmountQuery());
-                // setObjs([]);
-        } }, [dispatch]);
+        useEffect(() => {
+                dispatch(getObjects({flagSlice, api, queryStr, isReload: true}));
+              // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [queryStr]);
+
         return (
                 <div>
-                        <input 
-                                type="text"  className="form-control" 
-                                onChange={(e)=> dispatch(setQuery({key: 'search', val: e.target.value}))} value={query.search} 
+                        <input
+                                type="text"  className="form-control"
+                                onChange={(e)=> dispatch( setQuery({ flagSlice, api, query: {key: 'search', val: e.target.value} }) ) } 
+                                value={query?.search || '' }
                         />
                 </div>
         )

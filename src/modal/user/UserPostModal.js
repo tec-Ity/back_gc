@@ -1,17 +1,20 @@
 import  React , { useState, useEffect, useCallback } from "react";
 import { Modal, Button } from "react-bootstrap";
+import { FormattedMessage } from 'react-intl'; 
+import { useDispatch } from 'react-redux';
+import {postObject} from '../../features/objectsSlice'
 
-import { getObjs_Prom, fetch_Prom } from "../../js/api";
+import { getObjs_Prom } from "../../js/api";
 import threshold from "../../js/conf/threshold";
 import {role_Arrs} from "../../js/conf/confUser";
-import { FormattedMessage } from 'react-intl'; 
 
 import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";
 import ShopCard from "../../components/ui/shop/ShopCart";
 
 export default function UserPostModal(props) {
-	const {show, onHide, saveSuccess} = props;	// 模板的显示隐藏
+	const {flagSlice, show, onHide} = props;	// 模板的显示隐藏
+	const dispatch = useDispatch();
 	const text_flow = (window.innerWidth >= threshold.pc_mb)?"text-right": "text-left";
 
 	const curRole = parseInt(localStorage.getItem('role'));
@@ -27,7 +30,7 @@ export default function UserPostModal(props) {
 	}); // 创建的数据
 	
 	const apiShops = "/Shops";
-	const apiUserPost = "/UserPost";
+	const api = "/UserPost";
 
 	// const [pathShop, setPathShop] = useState('');
 	const [isShop, setIsShop] = useState(false);		// 是否有店铺选项
@@ -67,20 +70,10 @@ export default function UserPostModal(props) {
 		setFormdata((pre) => ({ ...pre, "role":selRole }));
 	} 
 
-	const postSubmit = async () => {
-		try {
-			// console.log(formdata)
-			const userPost_res = await fetch_Prom(apiUserPost, "POST", {obj:formdata});
-			if (userPost_res.status === 200) {
-				saveSuccess(userPost_res.data.object);
-				onHide();
-			} else {
-				console.log("UserPostModal", userPost_res.message);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	  };
+	const postSubmit = () => {
+		dispatch(postObject({flagSlice, api, formdata}))
+		onHide();
+	};
 	const UserAddCallback = useCallback(() => {
 		roleFilterShops(formdata.role);
 		// eslint-disable-next-line react-hooks/exhaustive-deps

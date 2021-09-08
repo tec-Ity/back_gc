@@ -1,7 +1,8 @@
 import  React , { useState, useEffect, useCallback } from "react";
 import { Modal, Button } from "react-bootstrap";
+import {  useDispatch } from 'react-redux';
 
-import { getObjs_Prom, fetch_Prom } from "../../js/api";
+import { getObjs_Prom } from "../../js/api";
 import threshold from "../../js/conf/threshold";
 import { role_Arrs } from "../../js/conf/confUser"
 import { FormattedMessage } from "react-intl";
@@ -10,22 +11,26 @@ import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";
 import ShopCard from "../../components/ui/shop/ShopCart";
 
-export default function UserPutModal(props) {
-	const {show, onHide,  object, saveSuccess} = props;	// 模板的显示隐藏
-	const text_flow = (window.innerWidth >= threshold.pc_mb)?"text-right": "text-left";
+import {putObject} from '../../features/objectsSlice';
 
+export default function UserPutModal(props) {
+	const {show, onHide,  object} = props;	// 模板的显示隐藏
+	const text_flow = (window.innerWidth >= threshold.pc_mb)?"text-right": "text-left";
+	
+	const dispatch = useDispatch();
 	const curRole = parseInt(localStorage.getItem('role'));
+	
+	const apiShops = "/Shops";
+	const flagSlice = 'user';
+	const api = "/UserPut/"+object._id;
 
 	const [formdata, setFormdata] = useState(object); // 创建的数据
-
-	const apiShops = "/Shops";
-	const apiUserPut = "/UserPut/"+object._id;
-
+	
 	// const [pathShop, setPathShop] = useState('');
 	const [isShop, setIsShop] = useState(false);		// 是否有店铺选项
 	const [Shops, setShops] = useState([]);
 	const [ShopSearch, setShopSearch] = useState(object.Shop?object.Shop.code:"");
-
+	
 	const iptShopSearch = () => (e) => {
 		const search = e.target.value;
 		setFormdata((pre) =>({...pre, "Shop": ""}));
@@ -37,9 +42,9 @@ export default function UserPutModal(props) {
 		setShopSearch(object.code);
 		setShops([])
 	}
-
+	
 	const iptFormdata = (type) => (e) => setFormdata((pre) => ({ ...pre, [type]: e.target.value }));
-
+	
 	const roleFilterShops = (selRole) => {
 		if(selRole > 100) {
 			setIsShop(true);
@@ -57,20 +62,11 @@ export default function UserPutModal(props) {
 		roleFilterShops(selRole)
 		setFormdata((pre) => ({ ...pre, "role":selRole }));
 	} 
-
-	const putSubmit = async () => {
-		try {
-			const userPut_res = await fetch_Prom(apiUserPut, "PUT", {obj:formdata});
-			if (userPut_res.status === 200) {
-				saveSuccess(userPut_res.data.object);
-				onHide();
-			} else {
-				console.log("UserPutModal:", userPut_res.message);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	  };
+	
+	const putSubmit = () => {
+		dispatch(putObject({flagSlice, api, data: {obj: formdata}}));
+		onHide();
+	};
 	const UserPutCallback = useCallback(() => {
                 const {code, nome, phonePre, phone, role } = object;
 		const Shop = object.Shop ? object.Shop._id : null;
@@ -80,17 +76,17 @@ export default function UserPutModal(props) {
                 setFormdata({code, nome, phonePre, phone, role, Shop});
 		roleFilterShops(formdata.role);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	  }, []);
-	  useEffect(() => {
+	}, []);
+	useEffect(() => {
 		UserPutCallback();
 		return () => {
 			setShops([]);
 			setShopSearch("");
 		}
-	  }, [UserPutCallback]);
-
+	}, [UserPutCallback]);
+	
 	return (
-
+		
 		<Modal onHide={onHide} show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter"> Update </Modal.Title>

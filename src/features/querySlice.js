@@ -1,34 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  query: {search: ''},
-};
-
-export const querySlice = createSlice({
+const querySlice = createSlice({
   name: 'query',
-  initialState,
+  initialState: {},
   reducers: {
         setQuery: (state, action) => {
-          state.query = {...state.query, [action.payload.key]: action.payload.val}
+          const {api, key, val} = action.payload;
+          if(!state[api]) state[api] = {};
+          state[api] = {...state[api], [key]: val}
         },
-
-        unmountQuery: (state) => {
-          const query = state.query;
-          Object.keys(query).forEach(key => {
-            query[key] = ''; 
-          } );
-          state.query = query;
+        cleanQuery: (state, action) => {
+          const {api} = action.payload;
+          state[api] = {};
         },
    },
   extraReducers: {
   }
 });
 
-export const { unmountQuery, setQuery } = querySlice.actions;
+export const { cleanQuery, setQuery } = querySlice.actions;
 
-export const selectQuery = (state) => state.query.query;
-export const selectQueryStr = (state) => {
-  const query = state.query.query;
+export const selectQuery = (api) =>  (state) => state.query[api];
+
+export const selectQueryStr = (api) =>  (state) => {
+  const query = state.query[api] || {};
   const filters = [];
     Object.keys(query).forEach(key => {
       if(query[key] !== '' || query[key] !== undefined || query[key] !== null){
@@ -36,9 +31,9 @@ export const selectQueryStr = (state) => {
       } 
     } );
     if(filters.join('&')) {
-      return `?${filters.join('&')}`;
+      return `&${filters.join('&')}`;
     } else {
-      return '';
+      return '&';
     }
 }
 

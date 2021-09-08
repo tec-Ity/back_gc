@@ -1,29 +1,33 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams, useHistory } from 'react-router';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../../features/authSlice';
-
-import { getObj_Prom, fetch_Prom } from '../../../js/api';
-import  {getRolePath} from '../../../js/conf/confUser';
 import { FormattedMessage } from 'react-intl'; 
+import { useSelector, useDispatch } from 'react-redux';
+
+import { fetch_Prom } from '../../../js/api';
+import  {getRolePath} from '../../../js/conf/confUser';
 
 import UserPutModal from "../../../modal/user/UserPutModal";
-
 import NavBread from '../../../components/universal/navBread/NavBread';
+
+import { selectUser } from '../../../features/authSlice';
+import {getObject, selectObject} from '../../../features/objectsSlice';
 
 export default function User() {
   const hist = useHistory();
-  const curUser = useSelector(selectUser);
+  const dispatch = useDispatch();
 
-    const {id} = useParams();
-    const apiUser = `/user/${id}`;
-    const rolePath = getRolePath();
-    const [object, setObject] = useState({});
+  const flagSlice = 'user';
+  const {id} = useParams();
+  const api = `/user/${id}`;
+
+  const rolePath = getRolePath();
+
+  const curUser = useSelector(selectUser);
+  const object = useSelector(selectObject(flagSlice));
+
     const [modalShow, setModalShow] = useState(false);
-    const saveSuccess = (obj) => {
-      getObj_Prom(apiUser, setObject);
-    }
+
     const deleteDB = async() => {
       const del_res = await fetch_Prom('/UserDelete/'+id, 'DELETE' )
       if(del_res.status === 200) {
@@ -32,14 +36,11 @@ export default function User() {
         console.log(del_res.message)
       }
     }
-    const usersCall = useCallback(() => {
-      getObj_Prom(apiUser, setObject);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
     useEffect(() => {
-        usersCall();
-        return () => setObject([]);
-      }, [usersCall]);
+      dispatch(getObject({flagSlice, api}))
+
+    }, [api, dispatch])
     return (<>
         <NavBread activePage={<FormattedMessage id='navLabel-user' defaultMessage='user' />}>
             <Link to={`/${rolePath}/users`}><FormattedMessage id='navLabel-users' defaultMessage='users' /></Link>
@@ -52,7 +53,7 @@ export default function User() {
                 <button className="btn btn-danger mx-4" onClick={deleteDB}> <i className='bx bx-trash'></i> </button>
               }
               <button className="btn btn-info" onClick={() => setModalShow(true)}> <i className='bx bx-edit-alt'></i> </button>
-              <UserPutModal show={modalShow} onHide={() => setModalShow(false)} object={object} saveSuccess={saveSuccess}/>
+              <UserPutModal show={modalShow} onHide={() => setModalShow(false)} object={object} />
             </div>
           )
         }

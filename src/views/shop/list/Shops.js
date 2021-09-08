@@ -4,7 +4,7 @@ import { getObjs_Prom } from "../../../js/api";
 import { getRolePath } from "../../../js/conf/confUser";
 import NavBread from "../../../components/universal/navBread/NavBread";
 
-import UiVariety from "../../../components/ui/UiVariety";
+import UiCards from "../../../components/ui/UiCards";
 import ShopCard from "../../../components/ui/shop/ShopCart";
 import ShopRow from "../../../components/ui/shop/ShopRow";
 
@@ -29,7 +29,7 @@ export default function Shops(props) {
     <>
       <NavBread  activePage="Shops"></NavBread>
       <div>
-        <UiVariety UiCard={ShopCard} UiRow={ShopRow} objects={objects} clickEvent={clickEvent} />
+        <UiCards UiCard={ShopCard} UiRow={ShopRow} objects={objects} clickEvent={clickEvent} />
       </div>
     </>
   );
