@@ -5,7 +5,7 @@ import { getRolePath } from "../../../js/conf/confUser";
 import NavBread from "../../../components/universal/navBread/NavBread";
 
 import UiCards from "../../../components/ui/UiCards";
-import ShopCard from "../../../components/ui/shop/ShopCart";
+import ShopCard from "../../../components/ui/shop/ShopCard";
 import ShopRow from "../../../components/ui/shop/ShopRow";
 
 export default function Shops(props) {
@@ -29,7 +29,7 @@ export default function Shops(props) {
     <>
       <NavBread  activePage="Shops"></NavBread>
       <div>
-        <UiCards UiCard={ShopCard} UiRow={ShopRow} objects={objects} clickEvent={clickEvent} />
+        <UiCards propsCard={ShopCard} UiRow={ShopRow} objects={objects} clickEvent={clickEvent} />
       </div>
     </>
   );

@@ -4,56 +4,62 @@ import { useParams, useHistory } from 'react-router';
 import { FormattedMessage } from 'react-intl'; 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetch_Prom } from '../../../js/api';
 import  {getRolePath} from '../../../js/conf/confUser';
 
 import UserPutModal from "../../../modal/user/UserPutModal";
 import NavBread from '../../../components/universal/navBread/NavBread';
 
 import { selectUser } from '../../../features/authSlice';
-import {getObject, selectObject} from '../../../features/objectsSlice';
+import {getObject, deleteObject, selectObject, cleanField} from '../../../features/objectsSlice';
 
 export default function User() {
   const hist = useHistory();
   const dispatch = useDispatch();
 
   const flagSlice = 'user';
+  const flagField = 'object';
   const {id} = useParams();
   const api = `/user/${id}`;
-
-  const rolePath = getRolePath();
+  const api_delete = '/UserDelete/'+id;
 
   const curUser = useSelector(selectUser);
   const object = useSelector(selectObject(flagSlice));
 
+  const rolePath = getRolePath();
+
+
     const [modalShow, setModalShow] = useState(false);
 
-    const deleteDB = async() => {
-      const del_res = await fetch_Prom('/UserDelete/'+id, 'DELETE' )
-      if(del_res.status === 200) {
+    const deleteDB = () => {
+        console.log(1)
+          dispatch(deleteObject({flagSlice, api:api_delete}))
           hist.replace(`/${rolePath}/users`);
-      } else {
-        console.log(del_res.message)
-      }
     }
 
     useEffect(() => {
       dispatch(getObject({flagSlice, api}))
-
+      return() => {
+        dispatch(cleanField({flagSlice, flagField}))
+      }
     }, [api, dispatch])
     return (<>
         <NavBread activePage={<FormattedMessage id='navLabel-user' defaultMessage='user' />}>
             <Link to={`/${rolePath}/users`}><FormattedMessage id='navLabel-users' defaultMessage='users' /></Link>
         </NavBread>
         {
-          object._id && (
+          object._id && (String(object._id) === String(id)) && (
             <div className="text-right">
               {
                 curUser._id !== object._id &&
                 <button className="btn btn-danger mx-4" onClick={deleteDB}> <i className='bx bx-trash'></i> </button>
               }
               <button className="btn btn-info" onClick={() => setModalShow(true)}> <i className='bx bx-edit-alt'></i> </button>
-              <UserPutModal show={modalShow} onHide={() => setModalShow(false)} object={object} />
+              <UserPutModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                object={object}
+                flagSlice={flagSlice}
+              />
             </div>
           )
         }

@@ -5,6 +5,7 @@ const en_US = {
     "list": 'List',
     "close": 'Close',
     "create": 'Create',
+    "update": 'Update',
     "confirm": 'Confirm',
 
     "role-1": 'Owner',

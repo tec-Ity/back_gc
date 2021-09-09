@@ -5,6 +5,7 @@ const zh_CN = {
     "list": '列表',
     "close": '关闭',
     "create": '创建',
+    "update": '更新',
     "confirm": '确认',
     
     "role-1": '拥有者',

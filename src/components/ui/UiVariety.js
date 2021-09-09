@@ -12,7 +12,7 @@ export default function UiVariety(props) {
         }
         const [keyUi, setKeyUi] = useState(styleUi.init);
         const [activeBtns, setActiveBtns] = useState(['btn-success', 'btn-outline-success']);
-        const { UiCard, UiRow, objects, clickEvent } = props;
+        const { propsCard, UiRow, objects, clickEvent } = props;
         const changeUi = ( iBtn) => {
                 // 变化样式组件
                 setKeyUi(styleUi.arr[iBtn]);
@@ -24,7 +24,7 @@ export default function UiVariety(props) {
         const componentUI = () => {
                 switch (keyUi) {
                         case styleUi.arr[0]:
-                                return <UiCards UiCard={UiCard}   objects={objects} clickEvent={clickEvent} />
+                                return <UiCards propsCard={propsCard}   objects={objects} clickEvent={clickEvent} />
                         case styleUi.arr[1]:
                                 return <UiRows  UiRow={UiRow} objects={objects} clickEvent={clickEvent} />                
                         default:

@@ -1,66 +1,60 @@
-import  React , { useState, useEffect, useCallback } from "react";
+import  React , { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { FormattedMessage } from 'react-intl'; 
-import { useDispatch } from 'react-redux';
-import {postObject} from '../../features/objectsSlice'
+import { useSelector, useDispatch } from 'react-redux';
 
-import { getObjs_Prom } from "../../js/api";
 import threshold from "../../js/conf/threshold";
-import {role_Arrs} from "../../js/conf/confUser";
+import { role_Arrs} from "../../js/conf/confUser";
 
 import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";
-import ShopCard from "../../components/ui/shop/ShopCart";
+import ShopCard from "../../components/ui/shop/ShopCard";
+import Query from "../../components/universal/query/Query";
+
+import {selectObjects, postObject} from '../../features/objectsSlice'
 
 export default function UserPostModal(props) {
 	const {flagSlice, show, onHide} = props;	// 模板的显示隐藏
-	const dispatch = useDispatch();
 	const text_flow = (window.innerWidth >= threshold.pc_mb)?"text-right": "text-left";
 
+	const dispatch = useDispatch();
 	const curRole = parseInt(localStorage.getItem('role'));
 	
-	const [formdata, setFormdata] = useState({
-		code: "", 
-		pwd: "111111",
-		nome: "",
-		phonePre: "0039",
-		phone: "",
-		Shop: "",
-		role: 0,
-	}); // 创建的数据
-	
-	const apiShops = "/Shops";
+	const flagSlice_Shops = "user_Shops";
+	const api_Shops = "/Shops";
 	const api = "/UserPost";
 
-	// const [pathShop, setPathShop] = useState('');
+	const [formdata, setFormdata] = useState({code: '', nome: '', role: '', pwd: '111111', phonePre: '0039', phone: ''}); // 创建的数据
+	
+	const [initQuery_Shops, setInitQuery_Shops] = useState({});		// 是否有店铺选项
 	const [isShop, setIsShop] = useState(false);		// 是否有店铺选项
-	const [Shops, setShops] = useState([]);
-	const [ShopSearch, setShopSearch] = useState("");
-
-	const iptShopSearch = () => (e) => {
-		const search = e.target.value;
-		setFormdata((pre) =>({...pre, "Shop": ""}));
-		setShopSearch(search);
-		getObjs_Prom(`${apiShops}?search=${search}`, Shops, setShops, true);
-		// console.log(Shops)
-	}
+	const Shops = useSelector(selectObjects(flagSlice_Shops));
+	//
 	const clickShopCard = (obj) => (e) => {
 		setFormdata((pre) =>({...pre, "Shop": obj._id}));
-		setShopSearch(obj.code);
-		setShops([])
+		setInitQuery_Shops({key: 'search', val: obj.code})
 	}
 
 	const iptFormdata = (type) => (e) => setFormdata((pre) => ({ ...pre, [type]: e.target.value }));
+	const matchSearchCode = (mCode) => {
+		Shops.forEach(obj => {
+			if(obj.code === mCode.toUpperCase()) {
+				setFormdata((pre) =>({...pre, "Shop": obj._id}));
+			} else {
+				if(formdata.Shop) {
+					const temp = {...formdata}
+					temp.Shop = null;
+					setFormdata(temp);
+				}
+			}
+		})
+	}
 
 	const roleFilterShops = (selRole) => {
 		if(selRole > 100) {
 			setIsShop(true);
-			if(!Shops || Shops.length === 0) {
-				getObjs_Prom(apiShops, Shops, setShops, true);
-			}
 		} else {
 			setIsShop(false);
-			setShopSearch("");
 			setFormdata((pre) => ({...pre, "Shop": ""}));
 		}
 	}
@@ -71,20 +65,15 @@ export default function UserPostModal(props) {
 	} 
 
 	const postSubmit = () => {
-		dispatch(postObject({flagSlice, api, formdata}))
+		dispatch(postObject({flagSlice, api, data: {obj: formdata}}))
 		onHide();
 	};
-	const UserAddCallback = useCallback(() => {
+
+	
+	useEffect(() => {
 		roleFilterShops(formdata.role);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+	  // eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, []);
-	  useEffect(() => {
-		UserAddCallback();
-		return () => {
-			setShops([]);
-			setShopSearch("");
-		}
-	  }, [UserAddCallback]);
 
 	return (
 		<Modal onHide={onHide} show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
@@ -127,33 +116,30 @@ export default function UserPostModal(props) {
 						</select>
 					</RowIpt>
 
-					{/*
-						isShop &&
-						<RowIpt rowClass={`my-3 ${text_flow}`}>
-							<select className="form-control" id="shop-ipt" data-style="btn-info"onChange={chgRole()}  label="Shop">
-								<option>please select</option>
-								{
-									Shops.map(item => {
-										return <option key={item._id} value={item._id}>{item.code}</option>
-									})
-								}
-							</select>
-						</RowIpt>
-					*/}
-
 					{
 						isShop &&(<>
 							<div className={`row ${text_flow}`}>
 								<label htmlFor="Shop-ipt" className={`col-md-2 col-form-label ${formdata.Shop&&"text-success"}`}> Shop</label>
 								<div className="col-md-10">
-									<input type="text" className="form-control" id="Shop-ipt" onChange={iptShopSearch()}  value={ShopSearch} />
+									<Query 
+										flagSlice={flagSlice_Shops}
+										api={api_Shops}
+										initQuery={initQuery_Shops}
+										matchSearchCode={matchSearchCode}
+									/>
 								</div>
 							</div>
 
 							<div className="row">
 								<div className="col-md-2"></div>
 								<div className="col-md-10">
-									<UiCards UiCard={ShopCard} objects={Shops} cols="col-6 col-md-4 col-xl-3 mt-2" clickEvent={clickShopCard}/>
+									<UiCards
+										cols="col-6 col-md-4 col-xl-3 mt-2"
+										UiCard={ShopCard}
+										objects={Shops}
+										matchId={formdata.Shop}
+										clickEvent={clickShopCard}
+									/>
 								</div>
 							</div>
 						</>)

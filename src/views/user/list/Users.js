@@ -7,8 +7,8 @@ import { getRolePath } from "../../../js/conf/confUser";
 
 import NavBread from "../../../components/universal/navBread/NavBread";
 import UiVariety from "../../../components/ui/UiVariety";
-import UserCard from "../../../components/ui/user/UserCart";
 import UserRow from "../../../components/ui/user/UserRow";
+import UserCard from "../../../components/ui/user/UserCard";
 import Query from "../../../components/universal/query/Query";
 
 import {selectObjects} from '../../../features/objectsSlice';
@@ -20,7 +20,9 @@ export default function Users(props) {
   const hist = useHistory();
   const rolePath = getRolePath();
   
-  const objects = useSelector(selectObjects(flagSlice));
+  const selectAs = [{select: 'code', as: 'title'}, {select: 'nome', as: 'desp'}, {select: 'role', as: 'note'}];
+  const objects = useSelector(selectObjects(flagSlice, selectAs));
+  // console.log(objects)
   const [modalShow, setModalShow] = useState(false);
 
   const clickCardEvent = (obj) => (e) => {
@@ -42,7 +44,7 @@ export default function Users(props) {
       <Query api={api} flagSlice={flagSlice} />
 
       <hr/>
-      <UiVariety UiCard={UserCard} UiRow={UserRow} objects={objects} clickEvent={clickCardEvent} />
+      <UiVariety propsCard={UserCard} UiRow={UserRow} objects={objects} clickEvent={clickCardEvent} />
     </>
   );
 }

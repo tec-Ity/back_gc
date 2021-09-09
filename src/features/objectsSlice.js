@@ -37,9 +37,9 @@ export const getObject = createAsyncThunk(
 
 export const postObject = createAsyncThunk(
         'objects/postObject',
-        async({flagSlice, api, formdata}, {getState, rejectWithValue}) => {
+        async({flagSlice, api, data}, {getState, rejectWithValue}) => {
                 // console.log(formdata)
-                const post_res = await fetch_Prom(api, "POST", {obj:formdata});
+                const post_res = await fetch_Prom(api, "POST", data);
                 if (post_res.status === 200) {
                         const objs = getState().objects[flagSlice]?.objects || [];
                         const newObj = post_res.data.object;
@@ -67,6 +67,7 @@ export const putObject = createAsyncThunk(
 export const deleteObject = createAsyncThunk(
         'objects/deleteObject',
         async ({flagSlice, api}, {getState, rejectWithValue}) => {
+                // console.log(api)
                 const res = await fetch_Prom(api, "DELETE");
                 if(res.status === 200) {
                         const objs = getState().objects[flagSlice]?.objects || [];
@@ -87,15 +88,20 @@ export const objectsSlice = createSlice({
         initialState,
         reducers: {
                 setQuery: (state, action) => {
-                        const {flagSlice, query} = action.payload;
+                        const {flagSlice, query, fixedQuery} = action.payload;
                         if(!state[flagSlice]) state[flagSlice] = {};
-                        state[flagSlice].query = {};
-                        state[flagSlice].query = {...state[flagSlice].query, [query.key]: query.val}
+                        let nxt = {...state[flagSlice].query}
+                        if(query) nxt = {...nxt,  [query.key]: query.val}
+                        if(fixedQuery) {
+                                console.log('fixedQuery', {...fixedQuery}); // qqqqqq
+                                nxt = {...nxt, ...fixedQuery};
+                        }
+                        state[flagSlice].query = nxt;
                 },
 
-                cleanQuery: (state, action) => {
-                        const {flagSlice} = action.payload;
-                        if(state[flagSlice])  delete state[flagSlice].query;
+                cleanField: (state, action) => {
+                        const {flagSlice, flagField} = action.payload;
+                        if(state[flagSlice])  delete state[flagSlice][flagField];
                 },
                 unObjectsSlice: (state, action) => {
                         const {flagSlice} = action.payload;
@@ -142,7 +148,7 @@ export const objectsSlice = createSlice({
         }
 });
 
-export const {setQuery, cleanQuery, unObjectsSlice} = objectsSlice.actions;
+export const {setQuery, cleanField, unObjectsSlice} = objectsSlice.actions;
 
 export const selectQuery = (flagSlice) =>  (state) => {
         if(state.objects[flagSlice] && state.objects[flagSlice].query) return state.objects[flagSlice].query;
@@ -151,20 +157,17 @@ export const selectQuery = (flagSlice) =>  (state) => {
 
 export const selectQueryStr = (flagSlice) =>  (state) => {
         const query = state.objects[flagSlice]?.query || {};
+        
         const filters = [];
-              Object.keys(query).forEach(key => {
-                        if(query[key] !== '' || query[key] !== undefined || query[key] !== null) filters.push(`${key}=${query[key]}`); 
-              } );
-              if(filters.join('&')) return `&${filters.join('&')}`;
-                        return '&';
-}
-
-export const selectObjects = (flagSlice) => (state) => {
-        if(state.objects[flagSlice] && state.objects[flagSlice].objects) {
-                return state.objects[flagSlice].objects
-        } else {
-                return [];
-        }
+        let populateStr = ''
+        Object.keys(query).forEach(key => {
+                if(key === 'populateObjs') {
+                        populateStr = '&populateObjs='+JSON.stringify(query[key]);
+                }
+                if(query[key] !== '' || query[key] !== undefined || query[key] !== null) filters.push(`${key}=${query[key]}`); 
+        } );
+        if(filters.join('&')) return `&${filters.join('&')}${populateStr}`;
+                return populateStr;
 }
 
 export const selectObject = (flagSlice) => (state) => {
@@ -173,6 +176,30 @@ export const selectObject = (flagSlice) => (state) => {
         } else {
                 return {};
         }
+}
+
+
+
+export const selectObjects = (flagSlice) => (state) => {
+        if(state.objects[flagSlice] && state.objects[flagSlice].objects) {
+                return state.objects[flagSlice].objects
+        } else {
+                return [];
+        }
+}
+export const selectAsObjects = (flagSlice, selectAs) => (state) => {
+        const objs = [];
+        if(state.objects[flagSlice] && state.objects[flagSlice].objects) {
+                state.objects[flagSlice].objects.forEach(object => {
+                        const obj = {};
+                        obj._id = object._id;
+                        selectAs.forEach(item => {
+                                obj[item.as] = object[item.select];
+                        })
+                        objs.push(obj);
+                })
+        }
+        return objs;
 }
 
 export default objectsSlice.reducer;

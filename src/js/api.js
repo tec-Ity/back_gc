@@ -56,6 +56,7 @@ export const fetch_Prom = (api, method = "GET", bodyObj) => {
           result.message = auth_res.message;
         }
       }
+      // console.log(result)
       return resolve(result);
     } catch (error) {
       return resolve({

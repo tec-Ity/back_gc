@@ -5,6 +5,7 @@ const it = {
         "list": 'Lista',
         "close": 'Chiudere',
         "create": 'Creare',
+        "update": 'Aggiornare',
         "confirm": 'Confermare',
 
         "role-1": 'Proprietario',

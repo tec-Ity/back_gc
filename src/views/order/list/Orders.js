@@ -1,26 +1,30 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
+// import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
 
-import {selectObjects, getObjects} from '../../../features/dbsSlice'
-import {selectQuery, selectQueryStr, setQuery} from '../../../features/querySlice'
+import Query from "../../../components/universal/query/Query";
+
+import {selectObjects} from '../../../features/objectsSlice'
 
 export default function Orders() {
+        const flagSlice = 'orders';
         const api = '/Orders';
-        const populateObjs = [{path: 'Client', select: 'code nome phone'}, {path: 'Shop', select: 'code nome'}];
-        const popStr = '&populateObjs='+JSON.stringify(populateObjs);
-        const dispatch = useDispatch();
+        const fixedQuery = {
+                populateObjs: [{path: 'Client', select: 'code nome phone'}, {path: 'Shop', select: 'code nome'}]
+        };
+        const popStr = '&populateObjs='+JSON.stringify(fixedQuery.populateObjs);
+        console.log('Orders', popStr)
+        // const dispatch = useDispatch();
 
-        const query = useSelector(selectQuery(api));
-        const queryStr = useSelector(selectQueryStr(api));
-        const objects = useSelector(selectObjects(api));
-        useEffect(() => {
-                dispatch(getObjects({api, queryStr: queryStr+popStr, isReload: true}));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [queryStr, dispatch])
+        // const queryStr = useSelector(selectQueryStr(flagSlice));
+        const objects = useSelector(selectObjects(flagSlice));
+        // useEffect(() => {
+        //         dispatch(getObjects({flagSlice, api, queryStr: queryStr+popStr, isReload: true}));
+        // // eslint-disable-next-line react-hooks/exhaustive-deps
+        // }, [queryStr, dispatch])
 
         let imp_Orders = 0;
         return (<>
-                <input type="text"  className="form-control" onChange={(e)=> dispatch(setQuery({api,key: 'search', val: e.target.value}))} value={query?.search || ''} />
+                <Query api={api} flagSlice={flagSlice} fixedQuery={fixedQuery} />
                 {
                         objects.map(order => { 
                                 imp_Orders += order.imp || 0;
