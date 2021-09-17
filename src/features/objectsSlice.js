@@ -3,8 +3,8 @@ import { fetch_Prom } from '../js/api';
 import { sortBy } from '../js/global';
 
 const initialState = {
-  errMsg: '',
-  status: 'idle',
+        errMsg: '',
+        status: 'idle',
 };
 
 export const getObjects = createAsyncThunk(
@@ -88,15 +88,14 @@ export const objectsSlice = createSlice({
         initialState,
         reducers: {
                 setQuery: (state, action) => {
-                        const {flagSlice, query, fixedQuery} = action.payload;
+                        const {flagSlice, query, isReload} = action.payload;
                         if(!state[flagSlice]) state[flagSlice] = {};
-                        let nxt = {...state[flagSlice].query}
-                        if(query) nxt = {...nxt,  [query.key]: query.val}
-                        if(fixedQuery) {
-                                console.log('fixedQuery', {...fixedQuery}); // qqqqqq
-                                nxt = {...nxt, ...fixedQuery};
+                        if(isReload === true) {
+                                state[flagSlice].query = {};
+                        } else {
+                                if(!state[flagSlice].query) state[flagSlice].query ={};
+                                state[flagSlice].query = {...state[flagSlice].query, [query.key]: query.val};
                         }
-                        state[flagSlice].query = nxt;
                 },
 
                 cleanField: (state, action) => {
@@ -157,17 +156,12 @@ export const selectQuery = (flagSlice) =>  (state) => {
 
 export const selectQueryStr = (flagSlice) =>  (state) => {
         const query = state.objects[flagSlice]?.query || {};
-        
         const filters = [];
-        let populateStr = ''
-        Object.keys(query).forEach(key => {
-                if(key === 'populateObjs') {
-                        populateStr = '&populateObjs='+JSON.stringify(query[key]);
-                }
-                if(query[key] !== '' || query[key] !== undefined || query[key] !== null) filters.push(`${key}=${query[key]}`); 
-        } );
-        if(filters.join('&')) return `&${filters.join('&')}${populateStr}`;
-                return populateStr;
+              Object.keys(query).forEach(key => {
+                        if(query[key] !== '' || query[key] !== undefined || query[key] !== null) filters.push(`${key}=${query[key]}`); 
+              } );
+              if(filters.join('&')) return `&${filters.join('&')}`;
+                        return '&';
 }
 
 export const selectObject = (flagSlice) => (state) => {

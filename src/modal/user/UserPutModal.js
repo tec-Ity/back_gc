@@ -140,7 +140,7 @@ export default function UserPutModal(props) {
 										<UiCards 
 											cols="col-6 col-md-4 col-xl-3 mt-2"
 											matchId={formdata.Shop}
-											UiCard={ShopCard}
+											propsCard={ShopCard}
 											objects={Shops}
 											clickEvent={clickShopCard}
 										/>

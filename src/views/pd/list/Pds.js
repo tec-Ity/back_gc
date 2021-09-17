@@ -29,6 +29,7 @@ export default function Pds(props) {
   return (
     <>
       <NavBread  activePage={<FormattedMessage id='navLabel-pds' defaultMessage='Products'/>}></NavBread>
+
       <Query api={api} flagSlice={flagSlice} />
       <div className="mt-4">
         <UiVariety propsCard={PdCard} UiRow={PdRow} objects={objects} clickEvent={clickEvent} />

@@ -11,7 +11,7 @@ import UiCards from "../../components/ui/UiCards";
 import ShopCard from "../../components/ui/shop/ShopCard";
 import Query from "../../components/universal/query/Query";
 
-import {selectObjects, postObject} from '../../features/objectsSlice'
+import {selectObjects, postObject} from '../../features/objectsSlice';
 
 export default function UserPostModal(props) {
 	const {flagSlice, show, onHide} = props;	// 模板的显示隐藏
@@ -32,7 +32,7 @@ export default function UserPostModal(props) {
 	//
 	const clickShopCard = (obj) => (e) => {
 		setFormdata((pre) =>({...pre, "Shop": obj._id}));
-		setInitQuery_Shops({key: 'search', val: obj.code})
+		setInitQuery_Shops({key: 'search', val: obj.code});
 	}
 
 	const iptFormdata = (type) => (e) => setFormdata((pre) => ({ ...pre, [type]: e.target.value }));
@@ -119,7 +119,7 @@ export default function UserPostModal(props) {
 					{
 						isShop &&(<>
 							<div className={`row ${text_flow}`}>
-								<label htmlFor="Shop-ipt" className={`col-md-2 col-form-label ${formdata.Shop&&"text-success"}`}> Shop</label>
+								<label className={`col-md-2 col-form-label ${formdata.Shop&&"text-success"}`}> Shop</label>
 								<div className="col-md-10">
 									<Query 
 										flagSlice={flagSlice_Shops}
@@ -135,7 +135,7 @@ export default function UserPostModal(props) {
 								<div className="col-md-10">
 									<UiCards
 										cols="col-6 col-md-4 col-xl-3 mt-2"
-										UiCard={ShopCard}
+										propsCard={ShopCard}
 										objects={Shops}
 										matchId={formdata.Shop}
 										clickEvent={clickShopCard}
