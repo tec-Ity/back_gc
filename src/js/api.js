@@ -108,12 +108,8 @@ export const logout_Prom = () => {
       });
       const result = await resPromise.json();
       if (result.status === 200) {
-        localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        localStorage.removeItem("crClient");
-        localStorage.removeItem("google");
-        localStorage.removeItem("thirdPartyLogin");
-
+        localStorage.removeItem("accessToken");
         window.location.reload();
       }
       resolve(result);

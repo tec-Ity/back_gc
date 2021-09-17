@@ -4,6 +4,8 @@ import it from "./it";
 
 /* 系统语言列表 */
 export const systemLangs =  ['zh-CN', 'en-US', 'it'];
+export const defaultLang = zh_CN;
+export const langLocale = 'it';
 
 export const LangConf = { 'zh-CN': '中文', 'en-US': 'English', 'it': 'Italiano' };
 

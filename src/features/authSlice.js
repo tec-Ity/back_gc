@@ -50,6 +50,10 @@ export const authSlice = createSlice({
       state.roleLinks = [];
       localStorage.removeItem("role");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("name_curUser");
+      localStorage.removeItem("role_curUser");
+      localStorage.removeItem("crShop");
     }
    },
   extraReducers: {

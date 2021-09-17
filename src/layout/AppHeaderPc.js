@@ -49,13 +49,13 @@ export default function AppHeaderPc(props) {
 				<i className='bx bx-menu' id="btn" onClick={togSidebar}></i>
 			</div>
 			<ul className="nav_list">
-				<li>
+				{/* <li>
 					<i className='bx bx-search' onClick={togSidebar}></i>
 					<input type="text" className="links_name " placeholder="Search..." />
 					{
 						innerWidth >= threshold.tooltip && <span className="tooltip">Search</span>
 					}
-				</li>
+				</li> */}
 				{
 					roleLinks&& roleLinks.map((link, index) => {
 						return (
