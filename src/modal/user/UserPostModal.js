@@ -26,13 +26,13 @@ export default function UserPostModal(props) {
 
 	const [formdata, setFormdata] = useState({code: '', nome: '', role: '', pwd: '111111', phonePre: '0039', phone: ''}); // 创建的数据
 	
-	const [initQuery_Shops, setInitQuery_Shops] = useState({});		// 是否有店铺选项
+	const [farQuery_Shops, setfarQuery_Shops] = useState({});		// 是否有店铺选项
 	const [isShop, setIsShop] = useState(false);		// 是否有店铺选项
 	const Shops = useSelector(selectObjects(flagSlice_Shops));
 	//
 	const clickShopCard = (obj) => (e) => {
 		setFormdata((pre) =>({...pre, "Shop": obj._id}));
-		setInitQuery_Shops({key: 'search', val: obj.code});
+		setfarQuery_Shops({key: 'search', val: obj.code});
 	}
 
 	const iptFormdata = (type) => (e) => setFormdata((pre) => ({ ...pre, [type]: e.target.value }));
@@ -124,7 +124,7 @@ export default function UserPostModal(props) {
 									<Query 
 										flagSlice={flagSlice_Shops}
 										api={api_Shops}
-										initQuery={initQuery_Shops}
+										farQuery={farQuery_Shops}
 										matchSearchCode={matchSearchCode}
 									/>
 								</div>

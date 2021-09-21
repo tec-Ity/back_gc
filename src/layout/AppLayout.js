@@ -24,6 +24,7 @@ export default function AppLayout() {
   const AppCallback = useCallback(() => {
     const refreshToken = localStorage.getItem("refreshToken");
     if (refreshToken) {
+      // 每次刷新需从后端叫refresh验证
       dispatch(reducerRefreshToken());
       const role = parseInt(localStorage.getItem("role"));
       let rolePath = getRolePath();

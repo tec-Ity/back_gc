@@ -1,7 +1,7 @@
-import  { useState,  lazy } from "react";
+import  { useState, useEffect, lazy } from "react";
 import { useHistory } from "react-router";
 import { FormattedMessage } from 'react-intl'; 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { getRolePath } from "../../../js/conf/confUser";
 
@@ -9,12 +9,12 @@ import NavBread from "../../../components/universal/navBread/NavBread";
 import UiVariety from "../../../components/ui/UiVariety";
 import UserRow from "../../../components/ui/user/UserRow";
 import UserCard from "../../../components/ui/user/UserCard";
-import Query from "../../../components/universal/query/Query";
 
-import {selectObjects} from '../../../features/objectsSlice';
+import {selectObjects, getObjects} from '../../../features/objectsSlice';
 
 const UserPostModal = lazy(() => import( "../../../modal/user/UserPostModal"));
 export default function Users(props) {
+  const dispatch = useDispatch()
   const flagSlice = 'user';
   const api = '/Users';
   const hist = useHistory();
@@ -28,7 +28,10 @@ export default function Users(props) {
   const clickCardEvent = (obj) => (e) => {
     hist.push(`/${rolePath}/user/${obj._id}`)
   }
-
+  useEffect(() => {
+      dispatch(getObjects({ flagSlice, api, isReload: true }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <NavBread  activePage={<FormattedMessage id='navLabel-users' defaultMessage='users'/>}></NavBread>
@@ -41,7 +44,6 @@ export default function Users(props) {
           onHide={() => setModalShow(false)}
           />
       </div>
-      <Query api={api} flagSlice={flagSlice} />
 
       <hr/>
       <UiVariety propsCard={UserCard} UiRow={UserRow} objects={objects} clickEvent={clickCardEvent} />
