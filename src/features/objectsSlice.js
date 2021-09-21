@@ -13,14 +13,10 @@ export const getObjects = createAsyncThunk(
     { flagSlice, api, queryStr, isReload },
     { getState, rejectWithValue }
   ) => {
-    let querystr = '';
-    if(queryStr) querystr = '?'+queryStr;
-    const res = await fetch_Prom(api + querystr);
+    const res = await fetch_Prom(api + queryStr);
     if (res.status === 200) {
       const objs = getState().objects[flagSlice]?.objects || [];
-      const objects = isReload
-        ? res.data.objects
-        : [...objs, ...res.data.objects];
+      const objects = isReload ? res.data.objects : [...objs, ...res.data.objects];
       return { flagSlice, objects };
     } else {
       return rejectWithValue("getObjects error info");
@@ -92,18 +88,26 @@ export const objectsSlice = createSlice({
   name: "objects",
   initialState,
   reducers: {
-    setQuery: (state, action) => {
-      const { flagSlice, query, isReload } = action.payload;
+    // 固定Query
+    setQueryFixed: (state, action) => {
+      const { flagSlice, queryFixed } = action.payload;
       if (!state[flagSlice]) state[flagSlice] = {};
-      if (isReload === true) {
-        state[flagSlice].query = {};
-      } else {
-        if (!state[flagSlice].query) state[flagSlice].query = {};
-        state[flagSlice].query = {
+      state[flagSlice].queryFixed = queryFixed;
+    },
+    // 最特殊的query
+    setSearch: (state, action) => {
+      const { flagSlice, search } = action.payload;
+      if (!state[flagSlice]) state[flagSlice] = {};
+      state[flagSlice].query = {search};
+    },
+    setQuery: (state, action) => {
+      const { flagSlice, query } = action.payload;
+      if (!state[flagSlice]) state[flagSlice] = {};
+      if (!state[flagSlice].query) state[flagSlice].query = {};
+      state[flagSlice].query = {
           ...state[flagSlice].query,
           [query.key]: query.val,
-        };
-      }
+      };
     },
 
     cleanField: (state, action) => {
@@ -171,12 +175,23 @@ export const objectsSlice = createSlice({
   },
 });
 
-export const { setQuery, cleanField, unObjectsSlice } = objectsSlice.actions;
+export const { 
+  setQueryFixed,
+  setSearch,
+  setQuery,
+  cleanField,
+  unObjectsSlice
+} = objectsSlice.actions;
 
 export const selectQuery = (flagSlice) => (state) => {
   if (state.objects[flagSlice] && state.objects[flagSlice].query)
     return state.objects[flagSlice].query;
   return {};
+};
+export const selectSearch = (flagSlice) => (state) => {
+  if (state.objects[flagSlice] && state.objects[flagSlice].query)
+    return state.objects[flagSlice].query.search;
+  return '';
 };
 
 export const selectQueryStr = (flagSlice) => (state) => {
@@ -184,10 +199,17 @@ export const selectQueryStr = (flagSlice) => (state) => {
   const filters = [];
   Object.keys(query).forEach((key) => {
     if (query[key] !== "" || query[key] !== undefined || query[key] !== null)
-      filters.push(`${key}=${query[key]}`);
+    filters.push(`${key}=${query[key]}`);
   });
-  if (filters.join("&")) return `&${filters.join("&")}`;
-  return "&";
+  let queryStr = '';
+  if( filters.join("&")  ) queryStr = `?${filters.join("&")}`;
+  
+  const queryFixed = state.objects[flagSlice]?.queryFixed || '';
+  if (queryFixed) {
+    if(queryStr.length > 0) queryStr += `&${queryFixed}`;
+    else queryStr += `?${queryFixed}`;
+  }
+  return queryStr;
 };
 
 export const selectObject = (flagSlice) => (state) => {

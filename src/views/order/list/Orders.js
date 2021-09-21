@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Query from "../../../components/universal/query/Query";
-import { selectObjects, getObjects } from "../../../features/objectsSlice";
+import SearchInput from "../../../components/universal/query/SearchInput";
+import { selectObjects, setQueryFixed } from "../../../features/objectsSlice";
 
 export default function Orders() {
   const dispatch = useDispatch()
@@ -11,81 +11,23 @@ export default function Orders() {
     { path: "Client", select: "code nome phone" },
     { path: "Shop", select: "code nome" },
   ];
-
-  const [filter, setFilter] = useState({
-    //order status
-    status: {
-      toPay: true,
-      paid: true,
-      inProgress: true,
-      completed: true,
-      canceled: true,
-    },
-  });
-  const [queryApi, setQueryApi] = useState("");
-  // console.log(filter)
+  const queryFixed = "&populateObjs=" + JSON.stringify(populateObjs);
+  // 先把queryFixed设置好
   useEffect(() => {
-    let query = "?";
-    for (const key in filter) {
-      if (Object.hasOwnProperty.call(filter, key)) {
-        const element = filter[key];
-        query += "&" + String(key) + "=";
-        switch (key) {
-          case "status":
-            query += [
-              element.toPay ? 100 : "",
-              element.toPay ? 70 : "",
-              element.paid ? 200 : "",
-              element.inProgress ? 400 : "",
-              element.inProgress ? 700 : "",
-              element.completed ? 800 : "",
-              element.canceled ? 10 : "",
-              element.canceled ? 60 : "",
-            ];
-            break;
-          default:
-            break;
-        }
-      }
-    }
-    // console.log(query);
-    setQueryApi(query);
-
-    //return queryApi
-  }, [filter]);
-  const populateStr = "&populateObjs=" + JSON.stringify(populateObjs);
+    dispatch(setQueryFixed({ flagSlice, queryFixed }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const objects = useSelector(selectObjects(flagSlice));
-
-  const handleChangeOrderStatus = (status) => () => {
-    // console.log(status);
-    setFilter((prev) => ({
-      ...prev,
-      status: { ...prev.status, [status]: !prev.status[status] },
-    }));
-    // (prev.orderStatus[status] = !prev.orderStatus[status]));
-  };
-
-  useEffect(() => {
-    dispatch(getObjects({ flagSlice, api, isReload: true }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
 
   let imp_Orders = 0;
   // console.log(api+queryApi)
   return (
     <>
-
-      <div className='d-flex justify-content-evenly'>
-        <button onClick={handleChangeOrderStatus("toPay")}>to pay</button>
-        <button onClick={handleChangeOrderStatus("paid")}>paid</button>
-        <button onClick={handleChangeOrderStatus("inProgress")}>
-          in progress
-        </button>
-        <button onClick={handleChangeOrderStatus("completed")}>finished</button>
-        <button onClick={handleChangeOrderStatus("canceled")}>canceled</button>
-      </div>
-
+      <SearchInput
+        flagSlice={flagSlice}
+        api={api}
+      />
       {objects.map((order) => {
         imp_Orders += order.imp || 0;
         return (

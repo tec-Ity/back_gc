@@ -9,7 +9,7 @@ import { role_Arrs} from "../../js/conf/confUser";
 import RowIpt from "../../components/basic/RowIpt";
 import UiCards from "../../components/ui/UiCards";
 import ShopCard from "../../components/ui/shop/ShopCard";
-import Query from "../../components/universal/query/Query";
+import SearchInput from "../../components/universal/query/SearchInput";
 
 import {selectObjects, postObject} from '../../features/objectsSlice';
 
@@ -121,7 +121,7 @@ export default function UserPostModal(props) {
 							<div className={`row ${text_flow}`}>
 								<label className={`col-md-2 col-form-label ${formdata.Shop&&"text-success"}`}> Shop</label>
 								<div className="col-md-10">
-									<Query 
+									<SearchInput 
 										flagSlice={flagSlice_Shops}
 										api={api_Shops}
 										farQuery={farQuery_Shops}
