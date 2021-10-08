@@ -13,6 +13,7 @@ export const getObjects = createAsyncThunk(
     { flagSlice, api, queryStr, isReload },
     { getState, rejectWithValue }
   ) => {
+    if(!queryStr) queryStr = '';
     const res = await fetch_Prom(api + queryStr);
     if (res.status === 200) {
       const objs = getState().objects[flagSlice]?.objects || [];
